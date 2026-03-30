@@ -14,7 +14,6 @@ export default function Challenge1() {
   const [userInput, setUserInput] = useState('');
   const [result, setResult] = useState(null);
   const [showHint, setShowHint] = useState(false);
-  const [showSolution, setShowSolution] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(ENCODED_PAYLOAD);
@@ -66,12 +65,6 @@ export default function Challenge1() {
               <code className="font-mono text-sm text-cyber-green break-all leading-relaxed">
                 {ENCODED_PAYLOAD}
               </code>
-            </div>
-            <div className="mt-3 flex items-center gap-2">
-              <AlertCircle className="w-3.5 h-3.5 text-cyber-yellow" />
-              <span className="font-mono text-[11px] text-gray-500">
-                Encodage détecté — structure non standard
-              </span>
             </div>
           </GlowCard>
 
@@ -147,23 +140,6 @@ export default function Challenge1() {
                 ne vous montre pas tout — il y a toujours du contenu que seul le code source révèle.
                 Pensez à regarder sous le capot.
               </p>
-              {!showSolution && (
-                <button
-                  onClick={() => setShowSolution(true)}
-                  className="mt-3 font-mono text-[11px] text-cyber-red/50 hover:text-cyber-red transition-colors cursor-pointer"
-                >
-                  Toujours bloqué ? Voir la solution
-                </button>
-              )}
-              {showSolution && (
-                <div className="mt-3 pt-3 border-t border-gray-800">
-                  <p className="font-mono text-[11px] text-cyber-red/70 mb-1">SOLUTION :</p>
-                  <p className="font-mono text-xs text-gray-400">
-                    Faites clic droit {'>'} "Inspecter" (ou Ctrl+U) sur cette page.
-                    Cherchez un commentaire HTML caché : il contient une URL secrète à visiter.
-                  </p>
-                </div>
-              )}
             </GlowCard>
           )}
         </div>

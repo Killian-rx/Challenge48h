@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { ShieldCheck, ShieldX, KeyRound, Sparkles, TriangleAlert } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
+import { useTimer } from '../context/TimerContext';
 
 export default function Validate() {
   const [code, setCode] = useState('');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [shakeError, setShakeError] = useState(false);
+  const { remaining, stop, stopped } = useTimer();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +25,9 @@ export default function Validate() {
       });
       const data = await res.json();
       setResult(data);
-      if (!data.success) {
+      if (data.success) {
+        stop();
+      } else {
         setShakeError(true);
         setTimeout(() => setShakeError(false), 600);
       }
@@ -97,6 +101,14 @@ export default function Validate() {
                 ACCÈS AUTORISÉ
               </h3>
               <p className="text-sm text-gray-400 mb-4">{result.message}</p>
+              {stopped && (
+                <div className="inline-block px-4 py-2 rounded-lg bg-gray-950/80 border border-cyber-green/30 mb-4">
+                  <p className="font-mono text-[11px] text-gray-500 mb-0.5">TEMPS FINAL</p>
+                  <p className="font-mono text-lg font-bold text-cyber-green tracking-wider">
+                    {String(Math.floor((12 * 60 - remaining) / 60)).padStart(2, '0')}:{String((12 * 60 - remaining) % 60).padStart(2, '0')}
+                  </p>
+                </div>
+              )}
               <div className="mt-4 pt-4 border-t border-gray-800">
                 <p className="font-mono text-xs text-gray-600">
                   Investigation terminée. Localisation confirmée. Bien joué.

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AlertTriangle, ChevronRight, Lock, Eye, Zap } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
 import LogPanel from '../components/LogPanel';
@@ -11,7 +11,11 @@ import { useTimer } from '../context/TimerContext';
 export default function Home() {
   const navigate = useNavigate();
   const [titleDone, setTitleDone] = useState(false);
-  const { start } = useTimer();
+  const { start, reset } = useTimer();
+
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
   return (
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">

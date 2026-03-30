@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Terminal, ArrowRight, Lock, Download, MapPin, Image } from 'lucide-react';
+import { ArrowRight, Download, MapPin, Image } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
 
 export default function FinalStep() {
   const navigate = useNavigate();
   const [showHint, setShowHint] = useState(false);
-  const [showSolution, setShowSolution] = useState(false);
 
   return (
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
@@ -51,18 +50,7 @@ export default function FinalStep() {
                 className="w-full h-64 object-cover opacity-80"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-950 to-transparent p-3">
-                <p className="font-mono text-[11px] text-gray-400">evidence_final.jpg — JPEG — EXIF présent</p>
-              </div>
-            </div>
-
-            <div className="mt-4 p-3 rounded-lg bg-gray-900/50 border border-gray-800">
-              <p className="font-mono text-xs text-gray-500 mb-2">SIGNATURE DU FICHIER :</p>
-              <div className="font-mono text-[11px] text-gray-600 space-y-0.5">
-                <p>Format : JPEG (FFD8...FFD9)</p>
-                <p>Taille : 119 Ko</p>
-                <p>Dimensions : 1024x679 pixels</p>
-                <p className="text-cyber-yellow">Headers additionnels détectés — analyse requise</p>
-                <p className="text-gray-600">Hash SHA256 : 7a3f...c91e (vérifié)</p>
+                <p className="font-mono text-[11px] text-gray-400">evidence_final.jpg — récupéré sur le nœud compromis</p>
               </div>
             </div>
           </GlowCard>
@@ -107,51 +95,11 @@ export default function FinalStep() {
                 Un simple viewer ne suffit pas. Cherchez ce que l'appareil a enregistré
                 automatiquement au moment de la capture — et trouvez où ça mène sur une carte.
               </p>
-              {!showSolution && (
-                <button
-                  onClick={() => setShowSolution(true)}
-                  className="mt-3 font-mono text-[11px] text-cyber-red/50 hover:text-cyber-red transition-colors cursor-pointer"
-                >
-                  Toujours bloqué ? Voir la solution
-                </button>
-              )}
-              {showSolution && (
-                <div className="mt-3 pt-3 border-t border-gray-800">
-                  <p className="font-mono text-[11px] text-cyber-red/70 mb-1">SOLUTION :</p>
-                  <p className="font-mono text-xs text-gray-400">
-                    Téléchargez l'image et analysez ses données EXIF (avec exiftool ou un site comme
-                    jeffreys exif viewer). Vous trouverez des coordonnées GPS. Collez-les dans Google Maps :
-                    elles pointent vers une île. Entrez le nom de cette île dans la validation.
-                  </p>
-                </div>
-              )}
             </GlowCard>
           )}
         </div>
 
         <div className="space-y-4">
-          {/* Terminal showing analysis */}
-          <GlowCard glow="green" hover={false}>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="flex gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-cyber-red/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-cyber-yellow/60" />
-                <div className="w-2.5 h-2.5 rounded-full bg-cyber-green/60" />
-              </div>
-              <span className="font-mono text-xs text-gray-500">analyse-image</span>
-            </div>
-            <div className="bg-gray-950/80 rounded-lg p-3 border border-gray-800 font-mono text-[11px] space-y-1">
-              <p className="text-gray-500">$ file evidence_final.jpg</p>
-              <p className="text-gray-400">JPEG image data, JFIF standard, EXIF</p>
-              <p className="text-gray-500">$ strings evidence_final.jpg | head</p>
-              <p className="text-gray-400">JFIF, Exif, II*</p>
-              <p className="text-gray-500">$ stat evidence_final.jpg</p>
-              <p className="text-gray-400">Size: 119638  Blocks: 240  IO Block: 4096</p>
-              <p className="text-cyber-yellow">[!] Métadonnées embarquées détectées</p>
-              <p className="text-gray-600">[i] Analyse locale impossible — téléchargez le fichier</p>
-            </div>
-          </GlowCard>
-
           <GlowCard glow="none" hover={false}>
             <h3 className="font-mono text-xs text-gray-500 tracking-wider mb-3">RAPPORT D'INCIDENT</h3>
             <div className="space-y-2 text-xs text-gray-500">

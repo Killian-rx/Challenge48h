@@ -128,7 +128,8 @@ export default function Hidden() {
   const [input, setInput] = useState('');
   const [cwd, setCwd] = useState('/home/agent');
   const [showHint, setShowHint] = useState(false);
-  const [showSolution, setShowSolution] = useState(false);
+  const [cmdHistory, setCmdHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -136,10 +137,91 @@ export default function Hidden() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [history]);
 
+  const getCompletions = (partial, currentCwd) => {
+    const node = FILESYSTEM[currentCwd];
+    if (!node || node.type !== 'dir') return [];
+    return node.children.filter((c) => c.startsWith(partial));
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const parts = input.split(/\s+/);
+      const lastPart = parts[parts.length - 1] || '';
+
+      let dirToSearch = cwd;
+      let prefix = lastPart;
+
+      if (lastPart.includes('/')) {
+        const lastSlash = lastPart.lastIndexOf('/');
+        const dirPart = lastPart.substring(0, lastSlash) || '/';
+        prefix = lastPart.substring(lastSlash + 1);
+        dirToSearch = resolvePath(cwd, dirPart);
+      }
+
+      const matches = getCompletions(prefix, dirToSearch);
+      if (matches.length === 1) {
+        const completed = matches[0];
+        const fullPath = dirToSearch === '/' ? '/' + completed : dirToSearch + '/' + completed;
+        const isDir = FILESYSTEM[fullPath]?.type === 'dir';
+
+        if (lastPart.includes('/')) {
+          const lastSlash = lastPart.lastIndexOf('/');
+          parts[parts.length - 1] = lastPart.substring(0, lastSlash + 1) + completed + (isDir ? '/' : '');
+        } else {
+          parts[parts.length - 1] = completed + (isDir ? '/' : '');
+        }
+        setInput(parts.join(' '));
+      } else if (matches.length > 1) {
+        const common = matches.reduce((a, b) => {
+          let i = 0;
+          while (i < a.length && i < b.length && a[i] === b[i]) i++;
+          return a.substring(0, i);
+        });
+        if (common.length > prefix.length) {
+          if (lastPart.includes('/')) {
+            const lastSlash = lastPart.lastIndexOf('/');
+            parts[parts.length - 1] = lastPart.substring(0, lastSlash + 1) + common;
+          } else {
+            parts[parts.length - 1] = common;
+          }
+          setInput(parts.join(' '));
+        } else {
+          setHistory((prev) => [
+            ...prev,
+            { type: 'prompt', text: `agent@forensic:${cwd.replace('/home/agent', '~')}$ ${input}` },
+            { type: 'output', text: matches.join('  ') },
+          ]);
+        }
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (cmdHistory.length === 0) return;
+      const newIndex = historyIndex < cmdHistory.length - 1 ? historyIndex + 1 : historyIndex;
+      setHistoryIndex(newIndex);
+      setInput(cmdHistory[cmdHistory.length - 1 - newIndex]);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex <= 0) {
+        setHistoryIndex(-1);
+        setInput('');
+      } else {
+        const newIndex = historyIndex - 1;
+        setHistoryIndex(newIndex);
+        setInput(cmdHistory[cmdHistory.length - 1 - newIndex]);
+      }
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const cmd = input.trim();
     setInput('');
+    setHistoryIndex(-1);
+
+    if (cmd) {
+      setCmdHistory((prev) => [...prev, cmd]);
+    }
 
     const prompt = `agent@forensic:${cwd.replace('/home/agent', '~')}$ ${cmd}`;
     const { output, cwd: newCwd } = processCommand(cmd, cwd);
@@ -209,6 +291,7 @@ export default function Hidden() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   className="flex-1 bg-transparent text-gray-200 outline-none caret-cyber-green"
                   autoFocus
                   spellCheck={false}
@@ -271,24 +354,6 @@ export default function Hidden() {
                 Certains commencent par un caractère spécial qui les rend invisibles
                 aux commandes standards. Essayez de tout lister.
               </p>
-              {!showSolution && (
-                <button
-                  onClick={() => setShowSolution(true)}
-                  className="mt-3 font-mono text-[11px] text-cyber-red/50 hover:text-cyber-red transition-colors cursor-pointer"
-                >
-                  Toujours bloqué ? Voir la solution
-                </button>
-              )}
-              {showSolution && (
-                <div className="mt-3 pt-3 border-t border-gray-800">
-                  <p className="font-mono text-[11px] text-cyber-red/70 mb-1">SOLUTION :</p>
-                  <p className="font-mono text-xs text-gray-400">
-                    Tapez <code className="text-cyber-green">ls -a</code> pour révéler le dossier caché <code className="text-cyber-green">.classified</code>.
-                    Puis <code className="text-cyber-green">cd .classified</code> et <code className="text-cyber-green">cat next_step.txt</code> pour
-                    découvrir l'URL de la prochaine étape.
-                  </p>
-                </div>
-              )}
             </GlowCard>
           )}
         </div>
