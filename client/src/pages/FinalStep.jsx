@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Terminal, ArrowRight, Lock } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
-
-{/* final_code: breach_completed */}
+import HtmlComment from '../components/HtmlComment';
 
 export default function FinalStep() {
   const navigate = useNavigate();
@@ -53,7 +52,7 @@ export default function FinalStep() {
 
   return (
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-      {/* final_code: breach_completed */}
+      <HtmlComment text="final_code: breach_completed" />
 
       <div className="mb-8">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyber-green/30 bg-cyber-green/5 mb-4">

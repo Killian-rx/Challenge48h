@@ -4,8 +4,7 @@ import { FileCode, Copy, CheckCircle, ArrowRight, AlertCircle } from 'lucide-rea
 import GlowCard from '../components/GlowCard';
 import TypewriterText from '../components/TypewriterText';
 import LogPanel from '../components/LogPanel';
-
-{/* <!-- try harder: /hidden --> */}
+import HtmlComment from '../components/HtmlComment';
 
 const ENCODED_PAYLOAD = 'Umt4QlIzdG1hWEp6ZEY5bVlXeHpaVjlzWldGa2ZRPT0=';
 
@@ -31,7 +30,7 @@ export default function Challenge1() {
 
   return (
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-      {/* <!-- try harder: /hidden --> */}
+      <HtmlComment text="try harder: /hidden" />
 
       <div className="mb-8">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyber-blue/30 bg-cyber-blue/5 mb-4">

@@ -3,12 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ImageOff, Search, ShieldAlert, ArrowRight } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
 import TypewriterText from '../components/TypewriterText';
-
-{/* 
-  Bien joué, enquêteur. Mais c'est encore une impasse.
-  Le vrai chemin continue ici : /final-step
-  Ne faites pas confiance à ce qui est en surface.
-*/}
+import HtmlComment from '../components/HtmlComment';
 
 export default function Hidden() {
   const navigate = useNavigate();
@@ -24,13 +19,8 @@ export default function Hidden() {
 
   return (
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-      {/* 
-        ====================================
-        FLAG{wrong_path}
-        Ce n'est pas le flag que vous cherchez.
-        Continuez à chercher.
-        ====================================
-      */}
+      <HtmlComment text="FLAG{wrong_path} — Ce n'est pas le flag que vous cherchez. Continuez à chercher." />
+      <HtmlComment text="Bien joué, enquêteur. Mais c'est encore une impasse. Le vrai chemin continue ici : /final-step" />
 
       <div className="mb-8">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyber-purple/30 bg-cyber-purple/5 mb-4">
