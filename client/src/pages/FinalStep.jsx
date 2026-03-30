@@ -6,6 +6,7 @@ import GlowCard from '../components/GlowCard';
 export default function FinalStep() {
   const navigate = useNavigate();
   const [showHint, setShowHint] = useState(false);
+  const [showSolution, setShowSolution] = useState(false);
 
   return (
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
@@ -106,6 +107,24 @@ export default function FinalStep() {
                 Un simple viewer ne suffit pas. Cherchez ce que l'appareil a enregistré
                 automatiquement au moment de la capture — et trouvez où ça mène sur une carte.
               </p>
+              {!showSolution && (
+                <button
+                  onClick={() => setShowSolution(true)}
+                  className="mt-3 font-mono text-[11px] text-cyber-red/50 hover:text-cyber-red transition-colors cursor-pointer"
+                >
+                  Toujours bloqué ? Voir la solution
+                </button>
+              )}
+              {showSolution && (
+                <div className="mt-3 pt-3 border-t border-gray-800">
+                  <p className="font-mono text-[11px] text-cyber-red/70 mb-1">SOLUTION :</p>
+                  <p className="font-mono text-xs text-gray-400">
+                    Téléchargez l'image et analysez ses données EXIF (avec exiftool ou un site comme
+                    jeffreys exif viewer). Vous trouverez des coordonnées GPS. Collez-les dans Google Maps :
+                    elles pointent vers une île. Entrez le nom de cette île dans la validation.
+                  </p>
+                </div>
+              )}
             </GlowCard>
           )}
         </div>

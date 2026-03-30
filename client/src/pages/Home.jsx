@@ -6,10 +6,12 @@ import LogPanel from '../components/LogPanel';
 import ThreatPanel from '../components/ThreatPanel';
 import TypewriterText from '../components/TypewriterText';
 import ScanAnimation from '../components/ScanAnimation';
+import { useTimer } from '../context/TimerContext';
 
 export default function Home() {
   const navigate = useNavigate();
   const [titleDone, setTitleDone] = useState(false);
+  const { start } = useTimer();
 
   return (
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
@@ -39,7 +41,7 @@ export default function Home() {
         {titleDone && (
           <div className="animate-float">
             <button
-              onClick={() => navigate('/challenge-1')}
+              onClick={() => { start(); navigate('/challenge-1'); }}
               className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-lg
                 bg-gradient-to-r from-cyber-green/20 to-cyber-blue/20
                 border border-cyber-green/30 hover:border-cyber-green/60

@@ -127,6 +127,8 @@ export default function Hidden() {
   ]);
   const [input, setInput] = useState('');
   const [cwd, setCwd] = useState('/home/agent');
+  const [showHint, setShowHint] = useState(false);
+  const [showSolution, setShowSolution] = useState(false);
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -247,7 +249,13 @@ export default function Hidden() {
             </div>
           </GlowCard>
 
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setShowHint(!showHint)}
+              className="font-mono text-[11px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
+            >
+              {showHint ? 'Masquer le coup de pouce' : 'Coup de pouce ?'}
+            </button>
             <button
               onClick={() => navigate('/validate')}
               className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
@@ -255,6 +263,34 @@ export default function Hidden() {
               Aller à la validation <ArrowRight className="w-3 h-3" />
             </button>
           </div>
+
+          {showHint && (
+            <GlowCard glow="none" hover={false}>
+              <p className="font-mono text-xs text-gray-500">
+                Tous les fichiers ne sont pas visibles par défaut sur un système Linux.
+                Certains commencent par un caractère spécial qui les rend invisibles
+                aux commandes standards. Essayez de tout lister.
+              </p>
+              {!showSolution && (
+                <button
+                  onClick={() => setShowSolution(true)}
+                  className="mt-3 font-mono text-[11px] text-cyber-red/50 hover:text-cyber-red transition-colors cursor-pointer"
+                >
+                  Toujours bloqué ? Voir la solution
+                </button>
+              )}
+              {showSolution && (
+                <div className="mt-3 pt-3 border-t border-gray-800">
+                  <p className="font-mono text-[11px] text-cyber-red/70 mb-1">SOLUTION :</p>
+                  <p className="font-mono text-xs text-gray-400">
+                    Tapez <code className="text-cyber-green">ls -a</code> pour révéler le dossier caché <code className="text-cyber-green">.classified</code>.
+                    Puis <code className="text-cyber-green">cd .classified</code> et <code className="text-cyber-green">cat next_step.txt</code> pour
+                    découvrir l'URL de la prochaine étape.
+                  </p>
+                </div>
+              )}
+            </GlowCard>
+          )}
         </div>
       </div>
     </div>
