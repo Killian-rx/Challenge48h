@@ -46,14 +46,15 @@ export default function Validate() {
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">Soumettre le code d'accès</h2>
           <p className="text-sm text-gray-400">
-            Entrez le code d'accès récupéré pour confirmer la brèche et terminer l'investigation.
+            L'investigation touche à sa fin. Si vous avez trouvé ce que l'attaquant cachait,
+            soumettez votre réponse.
           </p>
         </div>
 
         <GlowCard glow={result?.success ? 'green' : 'blue'} hover={false} className="mb-6">
           <form onSubmit={handleSubmit}>
             <label className="block font-mono text-xs text-gray-500 tracking-wider mb-3">
-              CODE D'ACCÈS
+              CODE D'ACCÈS FINAL
             </label>
             <div className={`flex gap-3 ${shakeError ? 'animate-[shake_0.5s_ease-in-out]' : ''}`}
               style={shakeError ? { animation: 'shake 0.5s ease-in-out' } : {}}
@@ -62,7 +63,7 @@ export default function Validate() {
                 type="text"
                 value={code}
                 onChange={(e) => { setCode(e.target.value); setResult(null); }}
-                placeholder="Entrez le code final..."
+                placeholder="Entrez votre réponse..."
                 className="flex-1 bg-gray-950/80 border border-gray-700 rounded-lg px-4 py-3
                   font-mono text-sm text-gray-200 placeholder-gray-600
                   focus:outline-none focus:border-cyber-green/50 focus:ring-1 focus:ring-cyber-green/20
@@ -96,15 +97,9 @@ export default function Validate() {
                 ACCÈS AUTORISÉ
               </h3>
               <p className="text-sm text-gray-400 mb-4">{result.message}</p>
-              <div className="inline-block px-6 py-3 rounded-lg bg-gray-950/80 border border-cyber-green/30">
-                <p className="font-mono text-xs text-gray-500 mb-1">VOTRE FLAG</p>
-                <p className="font-mono text-xl font-bold text-cyber-green text-glow-green tracking-wider">
-                  {result.flag}
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-gray-800">
+              <div className="mt-4 pt-4 border-t border-gray-800">
                 <p className="font-mono text-xs text-gray-600">
-                  Investigation terminée. Brèche confirmée. Bien joué.
+                  Investigation terminée. Localisation confirmée. Bien joué.
                 </p>
               </div>
             </div>

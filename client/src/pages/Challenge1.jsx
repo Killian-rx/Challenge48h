@@ -21,7 +21,8 @@ export default function Challenge1() {
   };
 
   const handleSubmit = () => {
-    if (userInput.trim() === 'FLAG{first_false_lead}') {
+    const val = userInput.trim().replace(/^FLAG\{(.+)\}$/, '$1');
+    if (val === 'first_false_lead' || userInput.trim() === 'FLAG{first_false_lead}') {
       setResult('decoy');
     } else {
       setResult('wrong');
@@ -67,7 +68,7 @@ export default function Challenge1() {
             <div className="mt-3 flex items-center gap-2">
               <AlertCircle className="w-3.5 h-3.5 text-cyber-yellow" />
               <span className="font-mono text-[11px] text-gray-500">
-                Encodage détecté : Base64 — possible encodage multi-couches
+                Encodage détecté — structure non standard
               </span>
             </div>
           </GlowCard>
@@ -75,8 +76,8 @@ export default function Challenge1() {
           <GlowCard glow="none">
             <h3 className="font-mono text-sm font-semibold text-gray-300 mb-3">CONSOLE D'ANALYSE</h3>
             <p className="text-xs text-gray-500 mb-4">
-              Entrez le résultat décodé ci-dessous. Réfléchissez bien — l'attaquant utilise plusieurs
-              couches d'encodage. Ce que vous trouvez n'est peut-être pas la réponse finale.
+              Soumettez votre analyse. L'attaquant est connu pour utiliser des techniques
+              de désinformation dans ses transmissions.
             </p>
             <div className="flex gap-3">
               <input
@@ -105,8 +106,8 @@ export default function Challenge1() {
                   <div>
                     <p className="font-mono text-sm text-cyber-yellow font-semibold">LEURRE DÉTECTÉ</p>
                     <p className="text-xs text-gray-400 mt-1">
-                      Cette valeur semble être une fausse piste placée par l'attaquant. Le vrai
-                      renseignement doit être caché ailleurs. Creusez plus profond — inspectez tout.
+                      Signature reconnue dans notre base de leurres. L'attaquant a planté
+                      cette valeur pour détourner l'attention. La vraie piste est ailleurs.
                     </p>
                   </div>
                 </div>
@@ -124,7 +125,7 @@ export default function Challenge1() {
 
           <div className="flex items-center justify-between">
             <p className="font-mono text-[11px] text-gray-600">
-              Indice : La vérité n'est jamais en surface. Regardez le code source.
+              « Ce que l'on voit n'est jamais toute l'histoire. » — Rapport d'incident #0x3F
             </p>
             <button
               onClick={() => navigate('/validate')}
@@ -138,23 +139,23 @@ export default function Challenge1() {
         <div className="space-y-4">
           <LogPanel />
           <GlowCard glow="none" hover={false}>
-            <h3 className="font-mono text-xs text-gray-500 tracking-wider mb-3">CONSEILS DE DÉCODAGE</h3>
+            <h3 className="font-mono text-xs text-gray-500 tracking-wider mb-3">NOTES DE L'ANALYSTE</h3>
             <ul className="space-y-2 text-xs text-gray-500">
               <li className="flex items-start gap-2">
-                <span className="text-cyber-green mt-0.5">$</span>
-                <span>Le Base64 utilise A-Z, a-z, 0-9, +, / et le padding =</span>
+                <span className="text-cyber-green mt-0.5">{'>'}</span>
+                <span>L'attaquant a l'habitude de masquer ses traces derrière des couches successives</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-cyber-green mt-0.5">$</span>
-                <span>L'encodage multi-couches nécessite un décodage séquentiel</span>
+                <span className="text-cyber-green mt-0.5">{'>'}</span>
+                <span>Nos précédentes investigations montrent qu'il laisse des leurres intentionnels</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-cyber-green mt-0.5">$</span>
-                <span>Tous les résultats décodés ne sont pas de vrais renseignements</span>
+                <span className="text-cyber-green mt-0.5">{'>'}</span>
+                <span>Les preuves les plus importantes ne sont pas toujours visibles au premier regard</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-cyber-green mt-0.5">$</span>
-                <span>Vérifiez toujours vos découvertes par plusieurs canaux</span>
+                <span className="text-cyber-green mt-0.5">{'>'}</span>
+                <span>Chaque page de cette infrastructure peut contenir des traces cachées</span>
               </li>
             </ul>
           </GlowCard>

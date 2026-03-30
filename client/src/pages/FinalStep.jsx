@@ -1,129 +1,165 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Terminal, ArrowRight, Lock } from 'lucide-react';
+import { Terminal, ArrowRight, Lock, Download, MapPin, Image } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
-import HtmlComment from '../components/HtmlComment';
 
 export default function FinalStep() {
   const navigate = useNavigate();
-  const [lines, setLines] = useState([]);
-
-  const terminalLines = [
-    { delay: 0, text: '$ ssh -i key.pem root@10.0.66.1', type: 'input' },
-    { delay: 600, text: 'Connexion au nœud compromis...', type: 'info' },
-    { delay: 1200, text: 'Authentification réussie.', type: 'success' },
-    { delay: 1800, text: '', type: 'blank' },
-    { delay: 2200, text: '$ cat /var/log/breach.log | tail -20', type: 'input' },
-    { delay: 2800, text: '[2025-03-29 03:47:12] Brèche périmétrique confirmée', type: 'info' },
-    { delay: 3200, text: '[2025-03-29 03:47:15] Règles firewall écrasées', type: 'info' },
-    { delay: 3600, text: '[2025-03-29 03:47:18] Mouvement latéral initié', type: 'info' },
-    { delay: 4000, text: '[2025-03-29 03:47:22] Escalade de privilèges réussie', type: 'warning' },
-    { delay: 4400, text: '[2025-03-29 03:47:25] Exfiltration de données démarrée', type: 'error' },
-    { delay: 4800, text: '[2025-03-29 03:47:31] Clés de chiffrement extraites', type: 'error' },
-    { delay: 5200, text: '', type: 'blank' },
-    { delay: 5600, text: '$ ls -la /root/.secrets/', type: 'input' },
-    { delay: 6200, text: 'total 16', type: 'info' },
-    { delay: 6400, text: 'drwx------  2 root root 4096 Mar 29 03:47 .', type: 'info' },
-    { delay: 6600, text: '-rw-------  1 root root   42 Mar 29 03:47 .keyfile', type: 'info' },
-    { delay: 7000, text: '', type: 'blank' },
-    { delay: 7400, text: '$ cat /root/.secrets/.keyfile', type: 'input' },
-    { delay: 8000, text: '===== CLÉ D\'ACCÈS RÉCUPÉRÉE =====', type: 'success' },
-    { delay: 8400, text: 'Utilisez-la dans le terminal de validation.', type: 'info' },
-    { delay: 8800, text: '==================================', type: 'success' },
-    { delay: 9200, text: '', type: 'blank' },
-    { delay: 9600, text: 'Connexion fermée.', type: 'info' },
-  ];
-
-  useEffect(() => {
-    const timeouts = terminalLines.map((line, i) =>
-      setTimeout(() => setLines((prev) => [...prev, line]), line.delay)
-    );
-    return () => timeouts.forEach(clearTimeout);
-  }, []);
-
-  const typeColors = {
-    input: 'text-cyber-green',
-    info: 'text-gray-400',
-    success: 'text-cyber-blue',
-    warning: 'text-cyber-yellow',
-    error: 'text-cyber-red',
-    blank: '',
-  };
+  const [showHint, setShowHint] = useState(false);
 
   return (
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-      <HtmlComment text="final_code: breach_completed" />
 
       <div className="mb-8">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyber-green/30 bg-cyber-green/5 mb-4">
-          <Terminal className="w-3.5 h-3.5 text-cyber-green" />
-          <span className="font-mono text-xs text-cyber-green tracking-wider">PHASE FINALE — ACCÈS ROOT</span>
+          <Image className="w-3.5 h-3.5 text-cyber-green" />
+          <span className="font-mono text-xs text-cyber-green tracking-wider">PHASE FINALE — PREUVE RÉCUPÉRÉE</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">Terminal du nœud compromis</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">Artefact récupéré — Nœud C2</h2>
         <p className="text-sm text-gray-400">
-          Accès direct au système compromis. Le journal de brèche révèle les dernières actions de l'attaquant.
+          Ce fichier a été extrait du serveur de commande et contrôle avant sa mise hors ligne.
+          L'agent KOWALSKI avait marqué cet artefact comme priorité maximale avant sa disparition.
         </p>
       </div>
 
-      <GlowCard glow="green" hover={false} className="mb-6">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="flex gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-cyber-red/60" />
-            <div className="w-2.5 h-2.5 rounded-full bg-cyber-yellow/60" />
-            <div className="w-2.5 h-2.5 rounded-full bg-cyber-green/60" />
-          </div>
-          <span className="font-mono text-xs text-gray-500">root@noeud-compromis:~#</span>
-        </div>
-        <div className="bg-gray-950/90 rounded-lg p-4 border border-gray-800 font-mono text-xs min-h-[320px] overflow-y-auto">
-          {lines.map((line, i) => (
-            <div key={i} className={`${typeColors[line.type]} ${line.type === 'blank' ? 'h-3' : ''}`}>
-              {line.text}
+      <div className="grid lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          {/* Image display */}
+          <GlowCard glow="blue" hover={false}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Image className="w-4 h-4 text-cyber-blue" />
+                <span className="font-mono text-xs text-gray-500 tracking-wider">FICHIER PREUVE — evidence_final.jpg</span>
+              </div>
+              <a
+                href="/evidence_final.jpg"
+                download="evidence_final.jpg"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono
+                  text-cyber-green border border-cyber-green/30 hover:bg-cyber-green/10
+                  transition-colors cursor-pointer"
+              >
+                <Download className="w-3 h-3" />
+                TÉLÉCHARGER
+              </a>
             </div>
-          ))}
-          {lines.length < terminalLines.length && (
-            <span className="inline-block w-2 h-3.5 bg-cyber-green animate-pulse-glow" />
-          )}
-        </div>
-      </GlowCard>
 
-      <div className="grid sm:grid-cols-2 gap-6">
-        <GlowCard glow="none">
-          <div className="flex items-start gap-3">
-            <Lock className="w-5 h-5 text-cyber-yellow mt-0.5" />
-            <div>
-              <h3 className="font-mono text-sm font-semibold text-cyber-yellow mb-2">INSTRUCTIONS</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                La clé d'accès a été récupérée depuis le nœud compromis.
-                Vous devez la trouver dans la sortie du terminal ou dans le code source
-                de la page pour passer à l'étape de validation. Inspectez attentivement.
-              </p>
+            <div className="relative bg-gray-950/80 rounded-lg border border-gray-800 overflow-hidden">
+              <img
+                src="/evidence_final.jpg"
+                alt="Evidence file"
+                className="w-full h-64 object-cover opacity-80"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-950 to-transparent p-3">
+                <p className="font-mono text-[11px] text-gray-400">evidence_final.jpg — JPEG — EXIF présent</p>
+              </div>
             </div>
-          </div>
-        </GlowCard>
 
-        <GlowCard glow="green">
-          <div className="flex flex-col items-center justify-center h-full text-center">
-            <p className="font-mono text-xs text-gray-500 mb-4">Prêt à soumettre le code final ?</p>
+            <div className="mt-4 p-3 rounded-lg bg-gray-900/50 border border-gray-800">
+              <p className="font-mono text-xs text-gray-500 mb-2">SIGNATURE DU FICHIER :</p>
+              <div className="font-mono text-[11px] text-gray-600 space-y-0.5">
+                <p>Format : JPEG (FFD8...FFD9)</p>
+                <p>Taille : 119 Ko</p>
+                <p>Dimensions : 1024x679 pixels</p>
+                <p className="text-cyber-yellow">Headers additionnels détectés — analyse requise</p>
+                <p className="text-gray-600">Hash SHA256 : 7a3f...c91e (vérifié)</p>
+              </div>
+            </div>
+          </GlowCard>
+
+          <GlowCard glow="none">
+            <div className="flex items-start gap-3">
+              <MapPin className="w-5 h-5 text-cyber-yellow mt-0.5" />
+              <div>
+                <h3 className="font-mono text-sm font-semibold text-cyber-yellow mb-2">NOTE DE L'AGENT KOWALSKI</h3>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  « L'image n'est pas ce qu'elle semble être. L'attaquant y a dissimulé quelque chose —
+                  pas dans les pixels, mais dans ce que l'appareil photo écrit sans qu'on le voie.
+                  Si on trouve où ça pointe, on trouve le point de rendez-vous. »
+                </p>
+                <p className="text-xs text-gray-600 mt-2 italic">
+                  — Extrait du carnet de terrain, dernière entrée avant disparition
+                </p>
+              </div>
+            </div>
+          </GlowCard>
+
+          {/* Progressive hint */}
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setShowHint(!showHint)}
+              className="font-mono text-[11px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
+            >
+              {showHint ? 'Masquer l\'indice' : 'Besoin d\'un coup de pouce ?'}
+            </button>
             <button
               onClick={() => navigate('/validate')}
-              className="group inline-flex items-center gap-2 px-6 py-2.5 rounded-lg
-                bg-gradient-to-r from-cyber-green/20 to-cyber-blue/20
-                border border-cyber-green/30 hover:border-cyber-green/60
-                text-cyber-green font-mono font-semibold text-sm tracking-wider
-                transition-all duration-300 glow-green cursor-pointer"
+              className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
             >
-              ACCÉDER À LA VALIDATION
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              Aller à la validation <ArrowRight className="w-3 h-3" />
             </button>
           </div>
-        </GlowCard>
-      </div>
 
-      <div style={{ position: 'absolute', left: '-9999px', top: '-9999px', opacity: 0, fontSize: 0 }}
-        data-key="final_code" data-value="breach_completed"
-        aria-hidden="true"
-      >
-        final_code: breach_completed
+          {showHint && (
+            <GlowCard glow="none" hover={false}>
+              <p className="font-mono text-xs text-gray-500">
+                Les fichiers numériques embarquent des métadonnées invisibles à l'œil nu.
+                Un simple viewer ne suffit pas. Cherchez ce que l'appareil a enregistré
+                automatiquement au moment de la capture — et trouvez où ça mène sur une carte.
+              </p>
+            </GlowCard>
+          )}
+        </div>
+
+        <div className="space-y-4">
+          {/* Terminal showing analysis */}
+          <GlowCard glow="green" hover={false}>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-cyber-red/60" />
+                <div className="w-2.5 h-2.5 rounded-full bg-cyber-yellow/60" />
+                <div className="w-2.5 h-2.5 rounded-full bg-cyber-green/60" />
+              </div>
+              <span className="font-mono text-xs text-gray-500">analyse-image</span>
+            </div>
+            <div className="bg-gray-950/80 rounded-lg p-3 border border-gray-800 font-mono text-[11px] space-y-1">
+              <p className="text-gray-500">$ file evidence_final.jpg</p>
+              <p className="text-gray-400">JPEG image data, JFIF standard, EXIF</p>
+              <p className="text-gray-500">$ strings evidence_final.jpg | head</p>
+              <p className="text-gray-400">JFIF, Exif, II*</p>
+              <p className="text-gray-500">$ stat evidence_final.jpg</p>
+              <p className="text-gray-400">Size: 119638  Blocks: 240  IO Block: 4096</p>
+              <p className="text-cyber-yellow">[!] Métadonnées embarquées détectées</p>
+              <p className="text-gray-600">[i] Analyse locale impossible — téléchargez le fichier</p>
+            </div>
+          </GlowCard>
+
+          <GlowCard glow="none" hover={false}>
+            <h3 className="font-mono text-xs text-gray-500 tracking-wider mb-3">RAPPORT D'INCIDENT</h3>
+            <div className="space-y-2 text-xs text-gray-500">
+              <p>L'attaquant opérait depuis une localisation physique fixe.</p>
+              <p>Le serveur C2 a été mis hors ligne à 04:17 UTC.</p>
+              <p>L'agent KOWALSKI a été le dernier à accéder à ce fichier avant sa disparition.</p>
+              <p className="text-gray-600 italic mt-3">« Si l'image pouvait parler, elle vous dirait où il se cachait. »</p>
+            </div>
+          </GlowCard>
+
+          <GlowCard glow="green">
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <p className="font-mono text-xs text-gray-500 mb-4">Prêt à soumettre le code final ?</p>
+              <button
+                onClick={() => navigate('/validate')}
+                className="group inline-flex items-center gap-2 px-6 py-2.5 rounded-lg
+                  bg-gradient-to-r from-cyber-green/20 to-cyber-blue/20
+                  border border-cyber-green/30 hover:border-cyber-green/60
+                  text-cyber-green font-mono font-semibold text-sm tracking-wider
+                  transition-all duration-300 glow-green cursor-pointer"
+              >
+                ACCÉDER À LA VALIDATION
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </GlowCard>
+        </div>
       </div>
     </div>
   );

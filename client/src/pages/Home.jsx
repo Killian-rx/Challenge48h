@@ -68,10 +68,10 @@ export default function Home() {
               <div>
                 <h3 className="font-mono text-sm font-semibold text-cyber-red mb-1">RAPPORT D'INCIDENT</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  À 03h47 UTC, nos défenses périmétrique ont détecté une menace persistante avancée.
-                  Plusieurs nœuds ont été compromis. L'attaquant a laissé une série de traces
-                  chiffrées dans le système. Votre mission : suivre les indices et récupérer la
-                  clé d'accès finale avant que l'attaquant ne termine son exfiltration.
+                  À 03h47 UTC, une menace persistante avancée a été détectée sur l'infrastructure.
+                  Plusieurs nœuds ont été compromis. L'attaquant, désigné sous le nom de code SPECTER,
+                  opère depuis une localisation inconnue. L'agent KOWALSKI, dernier à avoir investigué
+                  cette brèche, a disparu il y a 48 heures. Ses fichiers sont encore sur le système.
                 </p>
               </div>
             </div>
@@ -85,9 +85,10 @@ export default function Home() {
               <div>
                 <h3 className="font-mono text-sm font-semibold text-cyber-blue mb-1">BRIEFING RENSEIGNEMENT</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  L'attaquant utilise des techniques d'encodage multi-couches et de désinformation.
-                  Tout ce que vous trouvez n'est pas ce qu'il semble être. Inspectez chaque détail.
-                  Ne faites confiance à rien en apparence. La clé est cachée en pleine lumière.
+                  SPECTER est connu pour ses techniques de désinformation. Fausses pistes, leurres,
+                  données piégées — rien ne doit être pris au premier degré. Avant sa disparition,
+                  KOWALSKI avait intercepté une transmission chiffrée et commencé à remonter la piste.
+                  Reprenez là où il s'est arrêté.
                 </p>
               </div>
             </div>
@@ -99,27 +100,27 @@ export default function Home() {
                 <Zap className="w-5 h-5 text-cyber-green" />
               </div>
               <div>
-                <h3 className="font-mono text-sm font-semibold text-cyber-green mb-1">OBJECTIFS DE MISSION</h3>
+                <h3 className="font-mono text-sm font-semibold text-cyber-green mb-1">DIRECTIVE OPÉRATIONNELLE</h3>
                 <ul className="text-xs text-gray-400 space-y-1.5 mt-2">
                   <li className="flex items-center gap-2">
                     <span className="w-1 h-1 rounded-full bg-cyber-green" />
-                    Décoder la transmission interceptée
+                    Reprendre l'investigation de l'agent KOWALSKI
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-1 h-1 rounded-full bg-cyber-green" />
-                    Examiner toutes les preuves disponibles
+                    Analyser les transmissions interceptées
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-1 h-1 rounded-full bg-cyber-green" />
-                    Identifier les fausses pistes et leurres
+                    Distinguer les leurres des vraies preuves
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-1 h-1 rounded-full bg-cyber-green" />
-                    Récupérer le code d'accès final
+                    Localiser le point de rendez-vous de SPECTER
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-1 h-1 rounded-full bg-cyber-green" />
-                    Soumettre le code pour validation
+                    Confirmer l'identification pour clore l'opération
                   </li>
                 </ul>
               </div>
