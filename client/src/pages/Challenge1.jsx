@@ -7,7 +7,7 @@ import LogPanel from '../components/LogPanel';
 import HtmlComment from '../components/HtmlComment';
 import { useTimer } from '../context/TimerContext';
 
-const ENCODED_PAYLOAD = 'Umt4QlIzdG5hRzl6ZEY5emFXZHVZV3g1';
+const ENCODED_PAYLOAD = 'Umt4QlIzdG5hRzl6ZEY5emFXZHVZV3g5';
 
 export default function Challenge1() {
   const navigate = useNavigate();

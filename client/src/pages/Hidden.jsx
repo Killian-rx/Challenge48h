@@ -72,7 +72,7 @@ function processCommand(cmd, cwd) {
 
     case 'help':
       return {
-        output: 'Commandes disponibles :\n  ls [-a]    — lister les fichiers\n  cd <dir>   — changer de répertoire\n  cat <file> — lire un fichier\n  pwd        — répertoire actuel\n  clear      — effacer le terminal\n  help       — cette aide',
+        output: 'Commandes disponibles :\n  ls         — lister les fichiers\n  cd <dir>   — changer de répertoire\n  cat <file> — lire un fichier\n  pwd        — répertoire actuel\n  clear      — effacer le terminal\n  help       — cette aide',
         cwd,
       };
 
@@ -157,7 +157,7 @@ export default function Hidden() {
   const getCompletions = (partial, currentCwd) => {
     const node = FILESYSTEM[currentCwd];
     if (!node || node.type !== 'dir') return [];
-    return node.children.filter((c) => c.startsWith(partial));
+    return node.children.filter((c) => !c.startsWith('.') && c.startsWith(partial));
   };
 
   const handleKeyDown = (e) => {
