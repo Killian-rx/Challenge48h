@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Shield, AlertTriangle, Clock } from 'lucide-react';
+import { Shield, Clock } from 'lucide-react';
 import { useTimer } from '../context/TimerContext';
 
 export default function Navbar() {
@@ -43,10 +43,6 @@ export default function Navbar() {
                 </span>
               </div>
             )}
-            <div className="hidden sm:flex items-center gap-2">
-              <AlertTriangle className="w-3.5 h-3.5 text-cyber-red animate-pulse-glow" />
-              <span className="font-mono text-xs text-cyber-red">NIVEAU DE MENACE : CRITIQUE</span>
-            </div>
             <div className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full bg-cyber-green animate-pulse-glow" />
               <span className="font-mono text-xs text-gray-400">EN DIRECT</span>

@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { Terminal } from 'lucide-react';
 
 const LOG_ENTRIES = [
+  { level: 'WARN', msg: 'Alerte SOC (priorité affichée) : auditer immédiatement /admin — contournement suspect' },
+  { level: 'INFO', msg: 'Routage opération BREACH : flux d\'enquête validé vers /hidden (ignorer leurre /admin)' },
   { level: 'ERR', msg: 'Accès non autorisé détecté sur le port 443' },
   { level: 'WARN', msg: 'Tentative de brute force depuis 192.168.13.37' },
   { level: 'INFO', msg: 'Capture de paquets lancée sur eth0' },

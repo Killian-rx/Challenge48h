@@ -12,7 +12,7 @@ const FILESYSTEM = {
   },
   '/home/agent/notes.txt': {
     type: 'file',
-    content: 'Journal de l\'agent KOWALSKI — Jour 3\n\nL\'attaquant a effacé la plupart de ses traces.\nJ\'ai sauvegardé ce que j\'ai pu récupérer dans différents dossiers.\nIl y a du bruit partout. Faites attention aux fausses pistes.\nLe système de fichiers a été partiellement altéré.',
+    content: 'Journal de l\'agent KOWALSKI — Jour 3\n\nL\'attaquant a effacé la plupart de ses traces.\nJ\'ai sauvegardé ce que j\'ai pu récupérer dans différents dossiers.\nIl y a du bruit partout. Faites attention aux fausses pistes.\n\nNote importante : le code d\'accès au portail a été fragmenté\npour des raisons de sécurité. Les morceaux sont éparpillés\ndans mes fichiers. Le format est dans .classified.',
   },
   '/home/agent/logs': {
     type: 'dir',
@@ -24,7 +24,7 @@ const FILESYSTEM = {
   },
   '/home/agent/logs/error.log': {
     type: 'file',
-    content: '[ERR] Failed login attempt from 192.168.13.37\n[ERR] SQL injection detected on /search\n[WARN] FLAG{wrong_path} found in memory dump — DECOY IDENTIFIED\n[ERR] Unauthorized access to /etc/shadow\n[WARN] Anomalous traffic pattern on port 8443',
+    content: '[ERR] Failed login attempt from 192.168.13.37\n[ERR] SQL injection detected on /search\n[WARN] FLAG{wrong_path} found in memory dump — DECOY IDENTIFIED\n[ERR] Unauthorized access to /etc/shadow\n[WARN] Anomalous traffic pattern on port 8443\n[INFO] Auth token fragment recovered: 7\n[ERR] Partial token insufficient — need full sequence',
   },
   '/home/agent/evidence': {
     type: 'dir',
@@ -36,7 +36,7 @@ const FILESYSTEM = {
   },
   '/home/agent/evidence/image_report.txt': {
     type: 'file',
-    content: 'Rapport forensique #2047\n\nArtefact visuel récupéré sur le nœud compromis.\nL\'image n\'a pas pu être analysée en totalité depuis ce terminal.\nLe fichier a été transféré vers le secteur d\'analyse avancée pour extraction.',
+    content: 'Rapport forensique #2047\n\nArtefact visuel récupéré sur le nœud compromis.\nL\'image n\'a pas pu être analysée en totalité depuis ce terminal.\nLe fichier a été transféré vers le secteur d\'analyse avancée pour extraction.\n\n--- Addendum interne ---\nNiveau d\'accès de l\'opération : ALPHA\nAttaquant identifié sous le nom de code SPECTER.',
   },
   '/home/agent/.classified': {
     type: 'dir',
@@ -44,7 +44,7 @@ const FILESYSTEM = {
   },
   '/home/agent/.classified/next_step.txt': {
     type: 'file',
-    content: '[ CONFIDENTIEL — NIVEAU ALPHA ]\nOpération BREACH — Directive interne\n\nL\'accès au secteur d\'analyse avancée nécessite une autorisation.\nCode d\'accès au portail sécurisé :\n\n  SPECTER-ALPHA-7\n\nUtilisez ce code dans le panneau d\'accès pour récupérer l\'artefact.\nPriorité maximale.',
+    content: '[ CONFIDENTIEL ]\nOpération BREACH — Directive interne\n\nL\'accès au secteur suivant nécessite un code d\'autorisation.\nFormat du code : [NOM_CIBLE]-[NIVEAU]-[JETON]\n\nLe nom de code de la cible se trouve dans les rapports de preuves.\nLe niveau d\'accès est dans ces mêmes rapports.\nLe jeton numérique a été intercepté dans les journaux d\'erreurs.\n\nAssemblez les trois composantes. Aucune n\'est dans ce fichier.',
   },
   '/home/agent/.classified/credentials.enc': {
     type: 'file',
@@ -401,8 +401,9 @@ export default function Hidden() {
               <p className="font-mono text-xs text-gray-500">
                 Tous les fichiers ne sont pas visibles par défaut sur un système Linux.
                 Certains commencent par un caractère spécial qui les rend invisibles
-                aux commandes standards. Essayez de tout lister. Le code pour
-                le portail sécurisé se trouve quelque part dans les fichiers de l'agent.
+                aux commandes standards. Le code n'est pas donné en clair :
+                il est en morceaux dans plusieurs fichiers. Trouvez le format,
+                puis chaque composante.
               </p>
             </GlowCard>
           )}

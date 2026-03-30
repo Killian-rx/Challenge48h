@@ -7,6 +7,7 @@ import Challenge1 from './pages/Challenge1';
 import Hidden from './pages/Hidden';
 import FinalStep from './pages/FinalStep';
 import Validate from './pages/Validate';
+import Admin from './pages/Admin';
 import { useTimer } from './context/TimerContext';
 import GlowCard from './components/GlowCard';
 import PageTransition from './components/PageTransition';
@@ -186,6 +187,7 @@ export default function App() {
           <Route path="/hidden" element={<Hidden />} />
           <Route path="/final-step" element={<ProtectedFinalStep />} />
           <Route path="/validate" element={<Validate />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </PageTransition>

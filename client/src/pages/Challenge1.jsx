@@ -65,6 +65,12 @@ export default function Challenge1() {
           Notre système de surveillance a intercepté la transmission encodée suivante provenant du
           serveur C2 de l'attaquant. Décodez ce payload pour extraire des renseignements sur la brèche.
         </p>
+        <p className="text-xs font-mono text-gray-500 max-w-2xl mt-3 border-l-2 border-cyber-yellow/30 pl-3">
+          <span className="text-gray-600">Cellule crise — bulletin SOC :</span>{' '}
+          <span className="text-gray-400">activité anormale détectée sur /admin</span>
+          <span className="text-gray-600"> · </span>
+          <span className="text-gray-500">validation de piste en attente</span>
+        </p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -142,6 +148,18 @@ export default function Challenge1() {
                       Signature reconnue dans notre base de leurres. L'attaquant a planté
                       cette valeur pour détourner l'attention. La vraie piste est ailleurs.
                     </p>
+                    <div className="mt-3 p-2.5 rounded border border-cyber-blue/20 bg-cyber-blue/5">
+                      <p className="font-mono text-[11px] text-cyber-blue/90">
+                        Recommandation SOC automatique : pivot immédiat sur <span className="text-cyber-blue font-semibold">/admin</span>.
+                      </p>
+                      <button
+                        onClick={() => navigate('/admin')}
+                        className="mt-2 px-3 py-1.5 rounded-md border border-cyber-blue/30 text-cyber-blue
+                          font-mono text-[11px] hover:bg-cyber-blue/10 transition-colors cursor-pointer"
+                      >
+                        OUVRIR /ADMIN
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
