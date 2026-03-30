@@ -5,10 +5,12 @@ import Challenge1 from './pages/Challenge1';
 import Hidden from './pages/Hidden';
 import FinalStep from './pages/FinalStep';
 import Validate from './pages/Validate';
+import KeyboardSound from "./components/KeyboardSound";
 
 export default function App() {
   return (
     <div className="font-sans">
+      <KeyboardSound /> {/* le son sera actif partout */}
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
