@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ImageOff, Search, ShieldAlert, ArrowRight } from 'lucide-react';
+import { Lock, Search, ShieldAlert, ArrowRight } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
 import HtmlComment from '../components/HtmlComment';
 import { useTimer } from '../context/TimerContext';
@@ -44,7 +44,7 @@ const FILESYSTEM = {
   },
   '/home/agent/.classified/next_step.txt': {
     type: 'file',
-    content: '[ CONFIDENTIEL — NIVEAU ALPHA ]\nOpération BREACH — Directive interne\n\nL\'analyse des artefacts récupérés a été déplacée vers :\n\n  /final-step\n\nL\'image extraite du serveur C2 y est stockée.\nPriorité maximale.',
+    content: '[ CONFIDENTIEL — NIVEAU ALPHA ]\nOpération BREACH — Directive interne\n\nL\'accès au secteur d\'analyse avancée nécessite une autorisation.\nCode d\'accès au portail sécurisé :\n\n  SPECTER-ALPHA-7\n\nUtilisez ce code dans le panneau d\'accès pour récupérer l\'artefact.\nPriorité maximale.',
   },
   '/home/agent/.classified/credentials.enc': {
     type: 'file',
@@ -129,10 +129,21 @@ export default function Hidden() {
   const [input, setInput] = useState('');
   const [cwd, setCwd] = useState('/home/agent');
   const [showHint, setShowHint] = useState(false);
+  const [accessCode, setAccessCode] = useState('');
+  const [accessError, setAccessError] = useState(false);
   const { penalize } = useTimer();
   const toggleHint = () => {
     if (!showHint) penalize(60);
     setShowHint(!showHint);
+  };
+  const handleAccess = (e) => {
+    e.preventDefault();
+    if (accessCode.trim().toUpperCase() === 'SPECTER-ALPHA-7') {
+      navigate('/final-step');
+    } else {
+      setAccessError(true);
+      setTimeout(() => setAccessError(false), 2000);
+    }
   };
   const [cmdHistory, setCmdHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -247,7 +258,7 @@ export default function Hidden() {
   };
 
   return (
-    <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+    <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
       <HtmlComment text="FLAG{wrong_path} — Ce n'est pas le flag que vous cherchez." />
 
       <div className="mb-8">
@@ -309,22 +320,40 @@ export default function Hidden() {
         </div>
 
         <div className="space-y-4">
-          <GlowCard glow="none" hover={false}>
-            <h3 className="font-mono text-xs text-gray-500 tracking-wider mb-3">CARTE DES SECTEURS</h3>
-            <div className="space-y-2">
-              {[
-                { label: 'Point d\'entrée', status: 'TERMINÉ', color: 'text-gray-500' },
-                { label: 'Phase 1', status: 'TERMINÉ', color: 'text-gray-500' },
-                { label: 'Secteur caché', status: 'ACTIF', color: 'text-cyber-purple' },
-                { label: 'Inconnu', status: 'VERROUILLÉ', color: 'text-gray-700' },
-                { label: 'Validation', status: 'VERROUILLÉ', color: 'text-gray-700' },
-              ].map(({ label, status, color }) => (
-                <div key={label} className="flex items-center justify-between py-1.5 border-b border-gray-800/50 last:border-0">
-                  <span className={`font-mono text-xs ${color}`}>{label}</span>
-                  <span className={`font-mono text-[10px] ${color}`}>{status}</span>
-                </div>
-              ))}
+          <GlowCard glow="red" hover={false}>
+            <div className="flex items-center gap-2 mb-3">
+              <Lock className="w-4 h-4 text-cyber-red" />
+              <h3 className="font-mono text-xs text-cyber-red tracking-wider">PORTAIL SÉCURISÉ</h3>
             </div>
+            <p className="text-xs text-gray-500 mb-3">
+              L'accès au secteur d'analyse avancée est verrouillé. Un code d'autorisation est requis.
+            </p>
+            <form onSubmit={handleAccess} className="space-y-2">
+              <input
+                type="text"
+                value={accessCode}
+                onChange={(e) => { setAccessCode(e.target.value); setAccessError(false); }}
+                placeholder="Code d'accès..."
+                className="w-full bg-gray-950/80 border border-gray-700 rounded-md px-3 py-2
+                  font-mono text-xs text-gray-200 placeholder-gray-600 uppercase tracking-wider
+                  focus:outline-none focus:border-cyber-red/50 focus:ring-1 focus:ring-cyber-red/20
+                  transition-colors"
+                spellCheck={false}
+                autoComplete="off"
+              />
+              <button
+                type="submit"
+                className="w-full px-3 py-2 rounded-md bg-cyber-red/10 border border-cyber-red/30
+                  text-cyber-red font-mono text-xs hover:bg-cyber-red/20 transition-colors cursor-pointer"
+              >
+                ACCÉDER
+              </button>
+            </form>
+            {accessError && (
+              <p className="mt-2 font-mono text-[11px] text-cyber-red animate-pulse">
+                Code invalide. Autorisation refusée.
+              </p>
+            )}
           </GlowCard>
 
           <GlowCard glow="none" hover={false}>
@@ -358,7 +387,8 @@ export default function Hidden() {
               <p className="font-mono text-xs text-gray-500">
                 Tous les fichiers ne sont pas visibles par défaut sur un système Linux.
                 Certains commencent par un caractère spécial qui les rend invisibles
-                aux commandes standards. Essayez de tout lister.
+                aux commandes standards. Essayez de tout lister. Le code pour
+                le portail sécurisé se trouve quelque part dans les fichiers de l'agent.
               </p>
             </GlowCard>
           )}
