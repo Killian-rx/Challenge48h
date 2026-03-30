@@ -52,6 +52,7 @@ export function TimerProvider({ children }) {
   const reset = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(STOPPED_KEY);
+    localStorage.removeItem('breach_portal_unlocked');
     clearInterval(intervalRef.current);
     setRemaining(TOTAL_SECONDS);
     setRunning(false);

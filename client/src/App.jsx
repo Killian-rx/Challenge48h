@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { ShieldX, Skull, AlertTriangle } from 'lucide-react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { ShieldX, Skull, AlertTriangle, ShieldOff } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Challenge1 from './pages/Challenge1';
@@ -8,6 +8,7 @@ import Hidden from './pages/Hidden';
 import FinalStep from './pages/FinalStep';
 import Validate from './pages/Validate';
 import { useTimer } from './context/TimerContext';
+import GlowCard from './components/GlowCard';
 
 function ExpiredOverlay() {
   const { expired, stopped } = useTimer();
@@ -73,6 +74,43 @@ function ExpiredOverlay() {
   );
 }
 
+function ProtectedFinalStep() {
+  const unlocked = localStorage.getItem('breach_portal_unlocked');
+  if (!unlocked) return <Navigate to="/hidden" replace />;
+  return <FinalStep />;
+}
+
+function NotFound() {
+  const navigate = useNavigate();
+  return (
+    <div className="min-h-screen pt-20 pb-12 px-4 flex items-center justify-center">
+      <div className="max-w-md w-full text-center">
+        <ShieldOff className="w-20 h-20 text-cyber-red/40 mx-auto mb-6" />
+        <h2 className="font-mono text-2xl font-black text-cyber-red mb-2" style={{ textShadow: '0 0 20px rgba(255,50,50,0.3)' }}>
+          SECTEUR INTROUVABLE
+        </h2>
+        <p className="font-mono text-sm text-gray-500 mb-6">
+          Ce nœud n'existe pas sur le réseau compromis. Vérifiez vos coordonnées.
+        </p>
+        <GlowCard glow="none" hover={false}>
+          <div className="font-mono text-xs text-gray-600 space-y-1">
+            <p>$ ping secteur... <span className="text-cyber-red">TIMEOUT</span></p>
+            <p>$ traceroute... <span className="text-cyber-red">DESTINATION INACCESSIBLE</span></p>
+            <p>$ nslookup... <span className="text-cyber-red">NXDOMAIN</span></p>
+          </div>
+        </GlowCard>
+        <button
+          onClick={() => navigate(-1)}
+          className="mt-6 px-6 py-2 rounded-lg border border-gray-700 text-gray-400 font-mono text-xs
+            hover:border-cyber-green/50 hover:text-cyber-green transition-colors cursor-pointer"
+        >
+          RETOUR
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <div className="font-sans">
@@ -82,8 +120,9 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/challenge-1" element={<Challenge1 />} />
         <Route path="/hidden" element={<Hidden />} />
-        <Route path="/final-step" element={<FinalStep />} />
+        <Route path="/final-step" element={<ProtectedFinalStep />} />
         <Route path="/validate" element={<Validate />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

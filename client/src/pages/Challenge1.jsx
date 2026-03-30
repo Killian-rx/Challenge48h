@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FileCode, Copy, CheckCircle, ArrowRight, AlertCircle } from 'lucide-react';
+import { FileCode, Copy, CheckCircle, AlertCircle } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
 import TypewriterText from '../components/TypewriterText';
 import LogPanel from '../components/LogPanel';
@@ -10,7 +9,6 @@ import { useTimer } from '../context/TimerContext';
 const ENCODED_PAYLOAD = 'Umt4QlIzdG5hRzl6ZEY5emFXZHVZV3g5';
 
 export default function Challenge1() {
-  const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const [userInput, setUserInput] = useState('');
   const [result, setResult] = useState(null);
@@ -147,29 +145,12 @@ export default function Challenge1() {
           </GlowCard>
 
           {result === 'decoy' && (
-            <div className="flex items-center justify-between">
+            <div className="flex justify-start">
               <button
                 onClick={toggleHint2}
                 className="font-mono text-[11px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
               >
                 {showHint2 ? 'Masquer le coup de pouce' : 'Coup de pouce ? (−30s)'}
-              </button>
-              <button
-                onClick={() => navigate('/validate')}
-                className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
-              >
-                Aller à la validation <ArrowRight className="w-3 h-3" />
-              </button>
-            </div>
-          )}
-
-          {!result && (
-            <div className="flex justify-end">
-              <button
-                onClick={() => navigate('/validate')}
-                className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
-              >
-                Aller à la validation <ArrowRight className="w-3 h-3" />
               </button>
             </div>
           )}

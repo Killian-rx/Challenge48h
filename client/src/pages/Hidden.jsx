@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Search, ShieldAlert, ArrowRight } from 'lucide-react';
+import { Lock, Search, ShieldAlert } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
 import HtmlComment from '../components/HtmlComment';
 import { useTimer } from '../context/TimerContext';
@@ -139,6 +139,7 @@ export default function Hidden() {
   const handleAccess = (e) => {
     e.preventDefault();
     if (accessCode.trim().toUpperCase() === 'SPECTER-ALPHA-7') {
+      localStorage.setItem('breach_portal_unlocked', '1');
       navigate('/final-step');
     } else {
       setAccessError(true);
@@ -367,18 +368,12 @@ export default function Hidden() {
             </div>
           </GlowCard>
 
-          <div className="flex items-center justify-between">
+          <div className="flex justify-start">
             <button
               onClick={toggleHint}
               className="font-mono text-[11px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
             >
               {showHint ? 'Masquer le coup de pouce' : 'Coup de pouce ? (−1min)'}
-            </button>
-            <button
-              onClick={() => navigate('/validate')}
-              className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
-            >
-              Aller à la validation <ArrowRight className="w-3 h-3" />
             </button>
           </div>
 
