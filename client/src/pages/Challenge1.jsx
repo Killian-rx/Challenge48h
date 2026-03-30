@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { FileCode, Copy, CheckCircle, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { FileCode, Copy, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
-import TypewriterText from '../components/TypewriterText';
 import LogPanel from '../components/LogPanel';
 import HtmlComment from '../components/HtmlComment';
 import { useTimer } from '../context/TimerContext';
@@ -9,19 +9,22 @@ import { useTimer } from '../context/TimerContext';
 const ENCODED_PAYLOAD = 'Umt4QlIzdG5hRzl6ZEY5emFXZHVZV3g5';
 
 export default function Challenge1() {
+  const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const [userInput, setUserInput] = useState('');
   const [result, setResult] = useState(null);
   const [showHint1, setShowHint1] = useState(false);
   const [showHint2, setShowHint2] = useState(false);
+  const [usedHint1, setUsedHint1] = useState(false);
+  const [usedHint2, setUsedHint2] = useState(false);
   const { penalize } = useTimer();
 
   const toggleHint1 = () => {
-    if (!showHint1) penalize(30);
+    if (!usedHint1) { penalize(30); setUsedHint1(true); }
     setShowHint1(!showHint1);
   };
   const toggleHint2 = () => {
-    if (!showHint2) penalize(30);
+    if (!usedHint2) { penalize(30); setUsedHint2(true); }
     setShowHint2(!showHint2);
   };
 
@@ -32,8 +35,11 @@ export default function Challenge1() {
   };
 
   const handleSubmit = () => {
-    if (userInput.trim() === 'ghost_signal') {
+    const val = userInput.trim();
+    if (val === 'ghost_signal') {
       setResult('decoy');
+    } else if (/^FLAG\{.*\}$/i.test(val)) {
+      setResult('wrapped');
     } else {
       setResult('wrong');
     }
@@ -44,7 +50,13 @@ export default function Challenge1() {
       <HtmlComment text="try harder: /hidden" />
 
       <div className="mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyber-blue/30 bg-cyber-blue/5 mb-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer mb-4"
+        >
+          <ArrowLeft className="w-3 h-3" /> Retour
+        </button>
+        <div className="inline-flex items-center gap-2 mb-4">
           <FileCode className="w-3.5 h-3.5 text-cyber-blue" />
           <span className="font-mono text-xs text-cyber-blue tracking-wider">PHASE 1 — TRANSMISSION INTERCEPTÉE</span>
         </div>
@@ -132,6 +144,14 @@ export default function Challenge1() {
                     </p>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {result === 'wrapped' && (
+              <div className="mt-4 p-3 rounded-lg border border-cyber-blue/30 bg-cyber-blue/5">
+                <p className="font-mono text-xs text-cyber-blue">
+                  Le système n'accepte que le contenu brut — pas l'enveloppe complète.
+                </p>
               </div>
             )}
 

@@ -1,16 +1,14 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { AlertTriangle, ChevronRight, Lock, Eye, Zap } from 'lucide-react';
+import { useEffect } from 'react';
+import { ChevronRight } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
 import LogPanel from '../components/LogPanel';
 import ThreatPanel from '../components/ThreatPanel';
-import TypewriterText from '../components/TypewriterText';
 import ScanAnimation from '../components/ScanAnimation';
 import { useTimer } from '../context/TimerContext';
 
 export default function Home() {
   const navigate = useNavigate();
-  const [titleDone, setTitleDone] = useState(false);
   const { start, reset } = useTimer();
 
   useEffect(() => {
@@ -27,16 +25,7 @@ export default function Home() {
           </span>
         </h1>
 
-        <div className="h-8 mb-6">
-          <TypewriterText
-            text="Une intrusion a été détectée sur l'infrastructure. Trouvez d'où opérait l'attaquant avant qu'il ne soit trop tard."
-            speed={30}
-            className="text-gray-400 text-sm sm:text-base"
-            onComplete={() => setTitleDone(true)}
-          />
-        </div>
-
-        {titleDone && (
+        <div className="mb-6">
           <div className="animate-float">
             <button
               onClick={() => { start(); navigate('/challenge-1'); }}
@@ -51,7 +40,7 @@ export default function Home() {
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-        )}
+        </div>
       </div>
 
       <div className="mb-8">

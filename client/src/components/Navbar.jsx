@@ -26,12 +26,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-4">
             {showTimer && (
-              <div className={`flex items-center gap-2 px-3 py-1 rounded-full border ${
-                stopped ? 'border-cyber-green/50 bg-cyber-green/10' :
-                expired ? 'border-cyber-red/50 bg-cyber-red/10' :
-                urgent ? 'border-cyber-red/30 bg-cyber-red/5' :
-                'border-cyber-yellow/30 bg-cyber-yellow/5'
-              }`}>
+              <div className="flex items-center gap-2">
                 <Clock className={`w-3.5 h-3.5 ${
                   stopped ? 'text-cyber-green' :
                   expired ? 'text-cyber-red' :
@@ -48,7 +43,7 @@ export default function Navbar() {
                 </span>
               </div>
             )}
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full border border-cyber-red/30 bg-cyber-red/5">
+            <div className="hidden sm:flex items-center gap-2">
               <AlertTriangle className="w-3.5 h-3.5 text-cyber-red animate-pulse-glow" />
               <span className="font-mono text-xs text-cyber-red">NIVEAU DE MENACE : CRITIQUE</span>
             </div>

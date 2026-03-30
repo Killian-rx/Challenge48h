@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { ShieldX, Skull, AlertTriangle, ShieldOff } from 'lucide-react';
+import { ShieldX, Skull, AlertTriangle, ShieldOff, Siren } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Challenge1 from './pages/Challenge1';
@@ -9,6 +9,7 @@ import FinalStep from './pages/FinalStep';
 import Validate from './pages/Validate';
 import { useTimer } from './context/TimerContext';
 import GlowCard from './components/GlowCard';
+import PageTransition from './components/PageTransition';
 
 function ExpiredOverlay() {
   const { expired, stopped } = useTimer();
@@ -30,43 +31,104 @@ function ExpiredOverlay() {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center">
-      <div className={`absolute inset-0 transition-opacity duration-300 ${flicker ? 'bg-cyber-red/20' : 'bg-black/90'}`} />
-      <div className="relative z-10 max-w-lg mx-4 text-center">
-        <div className="animate-pulse-glow mb-6">
-          <Skull className="w-24 h-24 text-cyber-red mx-auto" />
-        </div>
+      <div className={`absolute inset-0 transition-opacity duration-300 ${flicker ? 'bg-red-950/40' : 'bg-black/95'}`} />
+      <div className="relative z-10 max-w-lg mx-4 p-8 rounded-2xl bg-gray-950 border border-cyber-red/40 shadow-[0_0_80px_rgba(255,51,102,0.25)]">
+        <div className="text-center">
+          <div className="animate-pulse-glow mb-5">
+            <Skull className="w-20 h-20 text-cyber-red mx-auto" />
+          </div>
 
-        <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyber-red/50 bg-cyber-red/10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyber-red/50 bg-cyber-red/10 mb-4">
             <AlertTriangle className="w-4 h-4 text-cyber-red" />
             <span className="font-mono text-xs text-cyber-red tracking-wider animate-pulse">ALERTE CRITIQUE</span>
           </div>
 
-          <h2 className="font-mono text-3xl sm:text-4xl font-black text-cyber-red" style={{ textShadow: '0 0 30px rgba(255,50,50,0.5)' }}>
+          <h2 className="font-mono text-3xl sm:text-4xl font-black text-cyber-red mb-3" style={{ textShadow: '0 0 40px rgba(255,50,50,0.6)' }}>
             TEMPS ÉCOULÉ
           </h2>
 
-          <p className="font-mono text-sm text-gray-400 leading-relaxed max-w-md mx-auto">
+          <p className="font-mono text-sm text-gray-300 leading-relaxed max-w-md mx-auto mb-5">
             L'attaquant a terminé son exfiltration. Votre fenêtre d'intervention est fermée.
             Les données compromises sont désormais hors de portée.
           </p>
 
-          <div className="mt-6 p-4 rounded-lg border border-cyber-red/30 bg-cyber-red/5">
+          <div className="p-4 rounded-lg border border-cyber-red/30 bg-cyber-red/10 mb-6">
             <div className="flex items-center justify-center gap-2 mb-2">
               <ShieldX className="w-5 h-5 text-cyber-red" />
               <span className="font-mono text-sm text-cyber-red font-bold">MISSION ÉCHOUÉE</span>
             </div>
-            <p className="font-mono text-xs text-gray-500">
+            <p className="font-mono text-xs text-gray-400">
               Connexion au serveur C2 perdue. SPECTER a quitté la zone.
             </p>
           </div>
 
           <button
             onClick={() => setVisible(false)}
-            className="mt-4 px-6 py-2 rounded-lg border border-gray-700 text-gray-500 font-mono text-xs
-              hover:border-gray-500 hover:text-gray-300 transition-colors cursor-pointer"
+            className="px-8 py-2.5 rounded-lg border border-cyber-red/30 bg-cyber-red/10
+              text-cyber-red font-mono text-xs font-bold tracking-wider
+              hover:bg-cyber-red/20 transition-colors cursor-pointer"
           >
             FERMER
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function UrgencyOverlay() {
+  const { remaining, running, stopped } = useTimer();
+  const [visible, setVisible] = useState(false);
+  const [triggered, setTriggered] = useState(false);
+  const [flash, setFlash] = useState(false);
+
+  useEffect(() => {
+    if (running && !stopped && !triggered && remaining <= 5 * 60 && remaining > 0) {
+      setTriggered(true);
+      setVisible(true);
+      const flashInterval = setInterval(() => setFlash((p) => !p), 200);
+      setTimeout(() => clearInterval(flashInterval), 3000);
+      return () => clearInterval(flashInterval);
+    }
+  }, [remaining, running, stopped, triggered]);
+
+  if (!visible) return null;
+
+  return (
+    <div className="fixed inset-0 z-[99] flex items-center justify-center">
+      <div className={`absolute inset-0 transition-opacity duration-200 ${flash ? 'bg-yellow-950/30' : 'bg-black/95'}`} />
+      <div className="relative z-10 max-w-md mx-4 p-8 rounded-2xl bg-gray-950 border border-cyber-yellow/40 shadow-[0_0_80px_rgba(255,215,0,0.2)]">
+        <div className="text-center">
+          <Siren className="w-16 h-16 text-cyber-yellow mx-auto mb-4 animate-pulse-glow" />
+
+          <h2 className="font-mono text-2xl sm:text-3xl font-black text-cyber-yellow mb-3" style={{ textShadow: '0 0 30px rgba(255,200,50,0.5)' }}>
+            ALERTE TEMPORELLE
+          </h2>
+
+          <p className="font-mono text-sm text-gray-300 leading-relaxed mb-5">
+            Il ne vous reste que <span className="text-cyber-red font-bold">5 minutes</span>.
+            SPECTER est en train de couvrir ses traces.
+          </p>
+
+          <div className="p-4 rounded-lg border border-cyber-yellow/30 bg-cyber-yellow/10 mb-6">
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-full bg-gray-800 rounded-full h-2.5">
+                <div className="bg-gradient-to-r from-cyber-yellow to-cyber-red h-2.5 rounded-full" style={{ width: '80%' }} />
+              </div>
+              <span className="font-mono text-xs text-cyber-red font-bold shrink-0">80%</span>
+            </div>
+            <p className="font-mono text-[11px] text-gray-400 mt-2">
+              Exfiltration de SPECTER
+            </p>
+          </div>
+
+          <button
+            onClick={() => setVisible(false)}
+            className="px-8 py-2.5 rounded-lg border border-cyber-yellow/30 bg-cyber-yellow/10
+              text-cyber-yellow font-mono text-xs font-bold tracking-wider
+              hover:bg-cyber-yellow/20 transition-colors cursor-pointer"
+          >
+            COMPRIS — CONTINUER
           </button>
         </div>
       </div>
@@ -115,15 +177,18 @@ export default function App() {
   return (
     <div className="font-sans">
       <Navbar />
+      <UrgencyOverlay />
       <ExpiredOverlay />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/challenge-1" element={<Challenge1 />} />
-        <Route path="/hidden" element={<Hidden />} />
-        <Route path="/final-step" element={<ProtectedFinalStep />} />
-        <Route path="/validate" element={<Validate />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <PageTransition>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/challenge-1" element={<Challenge1 />} />
+          <Route path="/hidden" element={<Hidden />} />
+          <Route path="/final-step" element={<ProtectedFinalStep />} />
+          <Route path="/validate" element={<Validate />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </PageTransition>
     </div>
   );
 }

@@ -44,13 +44,13 @@ export default function Validate() {
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto flex flex-col items-center justify-center">
       <div className="w-full">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyber-green/30 bg-cyber-green/5 mb-4">
+          <div className="inline-flex items-center gap-2 mb-4">
             <KeyRound className="w-3.5 h-3.5 text-cyber-green" />
             <span className="font-mono text-xs text-cyber-green tracking-wider">TERMINAL DE VALIDATION</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">Soumettre le code d'accès</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">Soumettre votre réponse</h2>
           <p className="text-sm text-gray-400">
-            L'investigation touche à sa fin. Si vous avez trouvé ce que l'attaquant cachait,
+            L'investigation touche à sa fin. Si vous avez identifié la localisation de l'attaquant,
             soumettez votre réponse.
           </p>
         </div>
@@ -58,7 +58,7 @@ export default function Validate() {
         <GlowCard glow={result?.success ? 'green' : 'blue'} hover={false} className="mb-6">
           <form onSubmit={handleSubmit}>
             <label className="block font-mono text-xs text-gray-500 tracking-wider mb-3">
-              CODE D'ACCÈS FINAL
+              RÉPONSE FINALE
             </label>
             <div className={`flex gap-3 ${shakeError ? 'animate-[shake_0.5s_ease-in-out]' : ''}`}
               style={shakeError ? { animation: 'shake 0.5s ease-in-out' } : {}}

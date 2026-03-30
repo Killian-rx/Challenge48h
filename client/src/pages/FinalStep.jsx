@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Download, MapPin, Image } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Download, MapPin, Image } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
 import { useTimer } from '../context/TimerContext';
 
 export default function FinalStep() {
   const navigate = useNavigate();
   const [showHint, setShowHint] = useState(false);
+  const [usedHint, setUsedHint] = useState(false);
   const { penalize } = useTimer();
   const toggleHint = () => {
-    if (!showHint) penalize(60);
+    if (!usedHint) { penalize(60); setUsedHint(true); }
     setShowHint(!showHint);
   };
 
@@ -17,7 +18,13 @@ export default function FinalStep() {
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
 
       <div className="mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyber-green/30 bg-cyber-green/5 mb-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer mb-4"
+        >
+          <ArrowLeft className="w-3 h-3" /> Retour
+        </button>
+        <div className="inline-flex items-center gap-2 mb-4">
           <Image className="w-3.5 h-3.5 text-cyber-green" />
           <span className="font-mono text-xs text-cyber-green tracking-wider">PHASE FINALE — PREUVE RÉCUPÉRÉE</span>
         </div>
@@ -53,7 +60,7 @@ export default function FinalStep() {
               <img
                 src="/evidence_final.jpg"
                 alt="Evidence file"
-                className="w-full h-64 object-cover opacity-80"
+                className="w-full h-80 object-cover opacity-80"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-950 to-transparent p-3">
                 <p className="font-mono text-[11px] text-gray-400">evidence_final.jpg — récupéré sur le nœud compromis</p>

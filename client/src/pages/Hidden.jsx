@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Search, ShieldAlert } from 'lucide-react';
+import { Lock, Search, ArrowLeft } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
 import HtmlComment from '../components/HtmlComment';
 import { useTimer } from '../context/TimerContext';
@@ -83,7 +83,19 @@ function processCommand(cmd, cwd) {
       const node = FILESYSTEM[cwd];
       if (!node || node.type !== 'dir') return { output: 'ls: pas un répertoire', cwd };
       const showHidden = args.includes('-a') || args.includes('-la') || args.includes('-al');
+      const showLong = args.includes('-l') || args.includes('-la') || args.includes('-al');
       const items = node.children.filter((c) => showHidden || !c.startsWith('.'));
+      if (showLong) {
+        const lines = items.map((item) => {
+          const fullPath = cwd === '/' ? '/' + item : cwd + '/' + item;
+          const child = FILESYSTEM[fullPath];
+          const isDir = child?.type === 'dir';
+          const perms = isDir ? 'drwxr-x---' : '-rw-r-----';
+          const size = isDir ? '4096' : String(child?.content?.length || 0).padStart(4, ' ');
+          return `${perms}  agent  agent  ${size}  Mar 29 03:47  ${item}${isDir ? '/' : ''}`;
+        });
+        return { output: lines.join('\n') || '(vide)', cwd };
+      }
       const parts = items.map((item) => {
         const fullPath = cwd === '/' ? '/' + item : cwd + '/' + item;
         const child = FILESYSTEM[fullPath];
@@ -129,11 +141,12 @@ export default function Hidden() {
   const [input, setInput] = useState('');
   const [cwd, setCwd] = useState('/home/agent');
   const [showHint, setShowHint] = useState(false);
+  const [usedHint, setUsedHint] = useState(false);
   const [accessCode, setAccessCode] = useState('');
   const [accessError, setAccessError] = useState(false);
   const { penalize } = useTimer();
   const toggleHint = () => {
-    if (!showHint) penalize(60);
+    if (!usedHint) { penalize(60); setUsedHint(true); }
     setShowHint(!showHint);
   };
   const handleAccess = (e) => {
@@ -263,7 +276,13 @@ export default function Hidden() {
       <HtmlComment text="FLAG{wrong_path} — Ce n'est pas le flag que vous cherchez." />
 
       <div className="mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyber-purple/30 bg-cyber-purple/5 mb-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer mb-4"
+        >
+          <ArrowLeft className="w-3 h-3" /> Retour
+        </button>
+        <div className="inline-flex items-center gap-2 mb-4">
           <Search className="w-3.5 h-3.5 text-cyber-purple" />
           <span className="font-mono text-xs text-cyber-purple tracking-wider">SECTEUR CACHÉ — ACCÈS TERMINAL</span>
         </div>
