@@ -7,7 +7,7 @@ import LogPanel from '../components/LogPanel';
 import HtmlComment from '../components/HtmlComment';
 import { useTimer } from '../context/TimerContext';
 
-const ENCODED_PAYLOAD = 'Umt4QlIzdG1hWEp6ZEY5bVlXeHpaVjlzWldGa2ZRPT0=';
+const ENCODED_PAYLOAD = 'Umt4QlIzdG5hRzl6ZEY5emFXZHVZV3g1';
 
 export default function Challenge1() {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function Challenge1() {
   };
 
   const handleSubmit = () => {
-    if (userInput.trim() === 'first_false_lead') {
+    if (userInput.trim() === 'ghost_signal') {
       setResult('decoy');
     } else {
       setResult('wrong');
