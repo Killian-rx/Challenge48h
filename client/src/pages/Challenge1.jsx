@@ -5,6 +5,7 @@ import GlowCard from '../components/GlowCard';
 import TypewriterText from '../components/TypewriterText';
 import LogPanel from '../components/LogPanel';
 import HtmlComment from '../components/HtmlComment';
+import { useTimer } from '../context/TimerContext';
 
 const ENCODED_PAYLOAD = 'Umt4QlIzdG1hWEp6ZEY5bVlXeHpaVjlzWldGa2ZRPT0=';
 
@@ -13,7 +14,18 @@ export default function Challenge1() {
   const [copied, setCopied] = useState(false);
   const [userInput, setUserInput] = useState('');
   const [result, setResult] = useState(null);
-  const [showHint, setShowHint] = useState(false);
+  const [showHint1, setShowHint1] = useState(false);
+  const [showHint2, setShowHint2] = useState(false);
+  const { penalize } = useTimer();
+
+  const toggleHint1 = () => {
+    if (!showHint1) penalize(30);
+    setShowHint1(!showHint1);
+  };
+  const toggleHint2 = () => {
+    if (!showHint2) penalize(30);
+    setShowHint2(!showHint2);
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(ENCODED_PAYLOAD);
@@ -22,8 +34,7 @@ export default function Challenge1() {
   };
 
   const handleSubmit = () => {
-    const val = userInput.trim().replace(/^FLAG\{(.+)\}$/, '$1');
-    if (val === 'first_false_lead' || userInput.trim() === 'FLAG{first_false_lead}') {
+    if (userInput.trim() === 'first_false_lead') {
       setResult('decoy');
     } else {
       setResult('wrong');
@@ -66,6 +77,23 @@ export default function Challenge1() {
                 {ENCODED_PAYLOAD}
               </code>
             </div>
+            <div className="mt-3 flex justify-end">
+              <button
+                onClick={toggleHint1}
+                className="font-mono text-[11px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
+              >
+                {showHint1 ? 'Masquer le coup de pouce' : 'Coup de pouce ? (−30s)'}
+              </button>
+            </div>
+            {showHint1 && (
+              <div className="mt-3 p-3 rounded-lg bg-gray-900/50 border border-gray-800">
+                <p className="font-mono text-xs text-gray-500">
+                  Cette chaîne de caractères est encodée, pas chiffrée. L'encodage utilisé est
+                  très courant sur le web — et il peut être appliqué plusieurs fois d'affilée.
+                  Essayez de décoder le résultat une seconde fois.
+                </p>
+              </div>
+            )}
           </GlowCard>
 
           <GlowCard glow="none">
@@ -118,22 +146,35 @@ export default function Challenge1() {
             )}
           </GlowCard>
 
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => setShowHint(!showHint)}
-              className="font-mono text-[11px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
-            >
-              {showHint ? 'Masquer le coup de pouce' : 'Coup de pouce ?'}
-            </button>
-            <button
-              onClick={() => navigate('/validate')}
-              className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
-            >
-              Aller à la validation <ArrowRight className="w-3 h-3" />
-            </button>
-          </div>
+          {result === 'decoy' && (
+            <div className="flex items-center justify-between">
+              <button
+                onClick={toggleHint2}
+                className="font-mono text-[11px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
+              >
+                {showHint2 ? 'Masquer le coup de pouce' : 'Coup de pouce ? (−30s)'}
+              </button>
+              <button
+                onClick={() => navigate('/validate')}
+                className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
+              >
+                Aller à la validation <ArrowRight className="w-3 h-3" />
+              </button>
+            </div>
+          )}
 
-          {showHint && (
+          {!result && (
+            <div className="flex justify-end">
+              <button
+                onClick={() => navigate('/validate')}
+                className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
+              >
+                Aller à la validation <ArrowRight className="w-3 h-3" />
+              </button>
+            </div>
+          )}
+
+          {showHint2 && result === 'decoy' && (
             <GlowCard glow="none" hover={false}>
               <p className="font-mono text-xs text-gray-500">
                 Ce que vous voyez à l'écran n'est que la surface. Un navigateur

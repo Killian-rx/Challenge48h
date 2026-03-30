@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ImageOff, Search, ShieldAlert, ArrowRight } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
 import HtmlComment from '../components/HtmlComment';
+import { useTimer } from '../context/TimerContext';
 
 const FILESYSTEM = {
   '/home/agent': {
@@ -128,6 +129,11 @@ export default function Hidden() {
   const [input, setInput] = useState('');
   const [cwd, setCwd] = useState('/home/agent');
   const [showHint, setShowHint] = useState(false);
+  const { penalize } = useTimer();
+  const toggleHint = () => {
+    if (!showHint) penalize(60);
+    setShowHint(!showHint);
+  };
   const [cmdHistory, setCmdHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const scrollRef = useRef(null);
@@ -334,10 +340,10 @@ export default function Hidden() {
 
           <div className="flex items-center justify-between">
             <button
-              onClick={() => setShowHint(!showHint)}
+              onClick={toggleHint}
               className="font-mono text-[11px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
             >
-              {showHint ? 'Masquer le coup de pouce' : 'Coup de pouce ?'}
+              {showHint ? 'Masquer le coup de pouce' : 'Coup de pouce ? (−1min)'}
             </button>
             <button
               onClick={() => navigate('/validate')}

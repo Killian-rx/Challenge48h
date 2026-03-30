@@ -19,6 +19,7 @@ export function TimerProvider({ children }) {
   const [remaining, setRemaining] = useState(wasStopped ? Number(wasStopped) : (saved ?? TOTAL_SECONDS));
   const [running, setRunning] = useState(saved !== null && !wasStopped);
   const [stopped, setStopped] = useState(!!wasStopped);
+  const [expired, setExpired] = useState(saved !== null && !wasStopped && saved <= 0);
   const intervalRef = useRef(null);
 
   const start = useCallback(() => {
@@ -39,6 +40,15 @@ export function TimerProvider({ children }) {
     setStopped(true);
   }, []);
 
+  const penalize = useCallback((seconds) => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) return;
+    const newStart = Number(stored) - seconds * 1000;
+    localStorage.setItem(STORAGE_KEY, String(newStart));
+    const r = getRemaining();
+    if (r !== null) setRemaining(r);
+  }, []);
+
   const reset = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(STOPPED_KEY);
@@ -46,6 +56,7 @@ export function TimerProvider({ children }) {
     setRemaining(TOTAL_SECONDS);
     setRunning(false);
     setStopped(false);
+    setExpired(false);
   }, []);
 
   useEffect(() => {
@@ -54,14 +65,17 @@ export function TimerProvider({ children }) {
       const r = getRemaining();
       if (r !== null) {
         setRemaining(r);
-        if (r <= 0) clearInterval(intervalRef.current);
+        if (r <= 0) {
+          clearInterval(intervalRef.current);
+          setExpired(true);
+        }
       }
     }, 1000);
     return () => clearInterval(intervalRef.current);
   }, [running]);
 
   return (
-    <TimerContext.Provider value={{ remaining, running, stopped, start, stop, reset }}>
+    <TimerContext.Provider value={{ remaining, running, stopped, expired, start, stop, reset, penalize }}>
       {children}
     </TimerContext.Provider>
   );

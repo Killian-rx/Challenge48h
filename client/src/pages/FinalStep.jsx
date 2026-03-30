@@ -2,10 +2,16 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Download, MapPin, Image } from 'lucide-react';
 import GlowCard from '../components/GlowCard';
+import { useTimer } from '../context/TimerContext';
 
 export default function FinalStep() {
   const navigate = useNavigate();
   const [showHint, setShowHint] = useState(false);
+  const { penalize } = useTimer();
+  const toggleHint = () => {
+    if (!showHint) penalize(60);
+    setShowHint(!showHint);
+  };
 
   return (
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
@@ -72,31 +78,6 @@ export default function FinalStep() {
             </div>
           </GlowCard>
 
-          {/* Progressive hint */}
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => setShowHint(!showHint)}
-              className="font-mono text-[11px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
-            >
-              {showHint ? 'Masquer l\'indice' : 'Besoin d\'un coup de pouce ?'}
-            </button>
-            <button
-              onClick={() => navigate('/validate')}
-              className="flex items-center gap-1.5 font-mono text-xs text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
-            >
-              Aller à la validation <ArrowRight className="w-3 h-3" />
-            </button>
-          </div>
-
-          {showHint && (
-            <GlowCard glow="none" hover={false}>
-              <p className="font-mono text-xs text-gray-500">
-                Les fichiers numériques embarquent des métadonnées invisibles à l'œil nu.
-                Un simple viewer ne suffit pas. Cherchez ce que l'appareil a enregistré
-                automatiquement au moment de la capture — et trouvez où ça mène sur une carte.
-              </p>
-            </GlowCard>
-          )}
         </div>
 
         <div className="space-y-4">
@@ -126,6 +107,23 @@ export default function FinalStep() {
               </button>
             </div>
           </GlowCard>
+
+          <button
+            onClick={toggleHint}
+            className="font-mono text-[11px] text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
+          >
+            {showHint ? 'Masquer le coup de pouce' : 'Coup de pouce ? (−1min)'}
+          </button>
+
+          {showHint && (
+            <GlowCard glow="none" hover={false}>
+              <p className="font-mono text-xs text-gray-500">
+                Les fichiers numériques embarquent des métadonnées invisibles à l'œil nu.
+                Un simple viewer ne suffit pas. Cherchez ce que l'appareil a enregistré
+                automatiquement au moment de la capture — et trouvez où ça mène sur une carte.
+              </p>
+            </GlowCard>
+          )}
         </div>
       </div>
     </div>

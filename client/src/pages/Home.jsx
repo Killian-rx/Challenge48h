@@ -20,12 +20,6 @@ export default function Home() {
   return (
     <div className="min-h-screen pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
       <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyber-red/30 bg-cyber-red/5 mb-6">
-          <AlertTriangle className="w-4 h-4 text-cyber-red animate-pulse-glow" />
-          <span className="font-mono text-xs text-cyber-red tracking-wider">
-            INCIDENT DE SÉCURITÉ — PRIORITÉ ALPHA
-          </span>
-        </div>
 
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 leading-tight">
           <span className="bg-gradient-to-r from-cyber-green via-cyber-blue to-cyber-purple bg-clip-text text-transparent animate-gradient">
