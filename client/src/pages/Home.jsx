@@ -29,7 +29,7 @@ export default function Home() {
 
         <div className="h-8 mb-6">
           <TypewriterText
-            text="Une intrusion a été détectée sur l'infrastructure. Retrouvez la clé avant qu'il ne soit trop tard."
+            text="Une intrusion a été détectée sur l'infrastructure. Trouvez d'où opérait l'attaquant avant qu'il ne soit trop tard."
             speed={30}
             className="text-gray-400 text-sm sm:text-base"
             onComplete={() => setTitleDone(true)}
@@ -62,16 +62,14 @@ export default function Home() {
         <div className="space-y-4">
           <GlowCard glow="red">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-cyber-red/10">
-                <Lock className="w-5 h-5 text-cyber-red" />
-              </div>
               <div>
                 <h3 className="font-mono text-sm font-semibold text-cyber-red mb-1">RAPPORT D'INCIDENT</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
                   À 03h47 UTC, une menace persistante avancée a été détectée sur l'infrastructure.
                   Plusieurs nœuds ont été compromis. L'attaquant, désigné sous le nom de code SPECTER,
-                  opère depuis une localisation inconnue. L'agent KOWALSKI, dernier à avoir investigué
-                  cette brèche, a disparu il y a 48 heures. Ses fichiers sont encore sur le système.
+                  opère depuis une localisation physique inconnue. L'agent KOWALSKI, dernier à avoir
+                  investigué cette brèche, a disparu il y a 48 heures. Il était sur le point de
+                  localiser la planque de SPECTER. Ses fichiers sont encore sur le système.
                 </p>
               </div>
             </div>
@@ -79,16 +77,14 @@ export default function Home() {
 
           <GlowCard glow="blue">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-cyber-blue/10">
-                <Eye className="w-5 h-5 text-cyber-blue" />
-              </div>
               <div>
                 <h3 className="font-mono text-sm font-semibold text-cyber-blue mb-1">BRIEFING RENSEIGNEMENT</h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
                   SPECTER est connu pour ses techniques de désinformation. Fausses pistes, leurres,
                   données piégées — rien ne doit être pris au premier degré. Avant sa disparition,
-                  KOWALSKI avait intercepté une transmission chiffrée et commencé à remonter la piste.
-                  Reprenez là où il s'est arrêté.
+                  KOWALSKI avait intercepté une transmission chiffrée et découvert que SPECTER
+                  opérait depuis un lieu physique précis. Reprenez son investigation et
+                  identifiez l'endroit d'où l'attaquant se cachait.
                 </p>
               </div>
             </div>
@@ -96,9 +92,6 @@ export default function Home() {
 
           <GlowCard glow="green">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-cyber-green/10">
-                <Zap className="w-5 h-5 text-cyber-green" />
-              </div>
               <div>
                 <h3 className="font-mono text-sm font-semibold text-cyber-green mb-1">DIRECTIVE OPÉRATIONNELLE</h3>
                 <ul className="text-xs text-gray-400 space-y-1.5 mt-2">
@@ -108,19 +101,19 @@ export default function Home() {
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-1 h-1 rounded-full bg-cyber-green" />
-                    Analyser les transmissions interceptées
+                    Analyser les transmissions interceptées par KOWALSKI
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-1 h-1 rounded-full bg-cyber-green" />
-                    Distinguer les leurres des vraies preuves
+                    Distinguer les leurres plantés par SPECTER des vraies preuves
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-1 h-1 rounded-full bg-cyber-green" />
-                    Localiser le point de rendez-vous de SPECTER
+                    Trouver l'endroit d'où SPECTER opérait
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-1 h-1 rounded-full bg-cyber-green" />
-                    Confirmer l'identification pour clore l'opération
+                    Soumettre le nom du lieu pour clore l'opération
                   </li>
                 </ul>
               </div>
