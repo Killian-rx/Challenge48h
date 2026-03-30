@@ -8,15 +8,19 @@ import { useTimer } from '../context/TimerContext';
 const FILESYSTEM = {
   '/home/agent': {
     type: 'dir',
-    children: ['notes.txt', 'logs', 'evidence', '.classified'],
+    children: ['notes.txt', 'logs', 'evidence', '.classified', 'todo.tmp'],
   },
   '/home/agent/notes.txt': {
     type: 'file',
-    content: 'Journal de l\'agent KOWALSKI — Jour 3\n\nL\'attaquant a effacé la plupart de ses traces.\nJ\'ai sauvegardé ce que j\'ai pu récupérer dans différents dossiers.\nIl y a du bruit partout. Faites attention aux fausses pistes.\n\nNote importante : le code d\'accès au portail a été fragmenté\npour des raisons de sécurité. Les morceaux sont éparpillés\ndans mes fichiers. Le format est dans .classified.',
+    content: 'Journal de l\'agent KOWALSKI — Jour 3\n\nL\'attaquant a effacé la plupart de ses traces.\nJ\'ai sauvegardé ce que j\'ai pu récupérer dans différents dossiers.\nIl y a du bruit partout. Faites attention aux fausses pistes.',
+  },
+  '/home/agent/todo.tmp': {
+    type: 'file',
+    content: 'TODO\n- Vérifier endpoint /admin\n- Tester token ALPHA-ROOT-9\n- Purger les faux logs avant audit',
   },
   '/home/agent/logs': {
     type: 'dir',
-    children: ['access.log', 'error.log'],
+    children: ['access.log', 'error.log', 'auth_debug.log'],
   },
   '/home/agent/logs/access.log': {
     type: 'file',
@@ -24,11 +28,15 @@ const FILESYSTEM = {
   },
   '/home/agent/logs/error.log': {
     type: 'file',
-    content: '[ERR] Failed login attempt from 192.168.13.37\n[ERR] SQL injection detected on /search\n[WARN] FLAG{wrong_path} found in memory dump — DECOY IDENTIFIED\n[ERR] Unauthorized access to /etc/shadow\n[WARN] Anomalous traffic pattern on port 8443\n[INFO] Auth token fragment recovered: 7\n[ERR] Partial token insufficient — need full sequence',
+    content: '[ERR] Failed login attempt from 192.168.13.37\n[ERR] SQL injection detected on /search\n[WARN] FLAG{wrong_path} found in memory dump — DECOY IDENTIFIED\n[ERR] Unauthorized access to /etc/shadow\n[WARN] Anomalous traffic pattern on port 8443',
+  },
+  '/home/agent/logs/auth_debug.log': {
+    type: 'file',
+    content: '[DEBUG] legacy_token=BREACH-ADMIN-LEGACY\n[DEBUG] backup_code=OMEGA-7\n[INFO] old format deprecated since build 2.7.1',
   },
   '/home/agent/evidence': {
     type: 'dir',
-    children: ['readme.txt', 'image_report.txt'],
+    children: ['readme.txt', 'image_report.txt', 'archive_note.txt'],
   },
   '/home/agent/evidence/readme.txt': {
     type: 'file',
@@ -36,19 +44,27 @@ const FILESYSTEM = {
   },
   '/home/agent/evidence/image_report.txt': {
     type: 'file',
-    content: 'Rapport forensique #2047\n\nArtefact visuel récupéré sur le nœud compromis.\nL\'image n\'a pas pu être analysée en totalité depuis ce terminal.\nLe fichier a été transféré vers le secteur d\'analyse avancée pour extraction.\n\n--- Addendum interne ---\nNiveau d\'accès de l\'opération : ALPHA\nAttaquant identifié sous le nom de code SPECTER.',
+    content: 'Rapport forensique #2047\n\nArtefact visuel récupéré sur le nœud compromis.\nL\'image n\'a pas pu être analysée en totalité depuis ce terminal.\nLe fichier a été transféré vers le secteur d\'analyse avancée pour extraction.',
+  },
+  '/home/agent/evidence/archive_note.txt': {
+    type: 'file',
+    content: 'Archive #129-A\nAncien schéma d\'authentification observé : [CIBLE]-[ZONE]-[CHIFFRE]\nExemple historique : SPECTER-OMEGA-9\nStatut : OBSOLÈTE (ne plus utiliser).',
   },
   '/home/agent/.classified': {
     type: 'dir',
-    children: ['next_step.txt', 'credentials.enc'],
+    children: ['next_step.txt', 'credentials.enc', 'old_keys.txt'],
   },
   '/home/agent/.classified/next_step.txt': {
     type: 'file',
-    content: '[ CONFIDENTIEL ]\nOpération BREACH — Directive interne\n\nL\'accès au secteur suivant nécessite un code d\'autorisation.\nFormat du code : [NOM_CIBLE]-[NIVEAU]-[JETON]\n\nLe nom de code de la cible se trouve dans les rapports de preuves.\nLe niveau d\'accès est dans ces mêmes rapports.\nLe jeton numérique a été intercepté dans les journaux d\'erreurs.\n\nAssemblez les trois composantes. Aucune n\'est dans ce fichier.',
+    content: '[ CONFIDENTIEL — NIVEAU ALPHA ]\nOpération BREACH — Directive interne\n\nL\'accès au secteur d\'analyse avancée nécessite une autorisation.\nCode d\'accès au portail sécurisé :\n\n  SPECTER-ALPHA-7\n\nUtilisez ce code dans le panneau d\'accès pour récupérer l\'artefact.\nPriorité maximale.',
   },
   '/home/agent/.classified/credentials.enc': {
     type: 'file',
     content: '[ERREUR] Fichier chiffré — clé de déchiffrement non disponible.\nContenu : %$#@!*&^#@... données corrompues.',
+  },
+  '/home/agent/.classified/old_keys.txt': {
+    type: 'file',
+    content: 'Clés archivées (invalides)\n- SPECTER-OMEGA-7\n- KRAKEN-ALPHA-3\n- BREACH-ROOT-1\n\nNOTE: Ne pas confondre avec la clé active de l\'opération en cours.',
   },
 };
 
@@ -401,9 +417,8 @@ export default function Hidden() {
               <p className="font-mono text-xs text-gray-500">
                 Tous les fichiers ne sont pas visibles par défaut sur un système Linux.
                 Certains commencent par un caractère spécial qui les rend invisibles
-                aux commandes standards. Le code n'est pas donné en clair :
-                il est en morceaux dans plusieurs fichiers. Trouvez le format,
-                puis chaque composante.
+                aux commandes standards. Essayez de tout lister. Le code pour
+                le portail sécurisé se trouve quelque part dans les fichiers de l'agent.
               </p>
             </GlowCard>
           )}

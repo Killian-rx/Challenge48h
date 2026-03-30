@@ -5,6 +5,7 @@ const TimerContext = createContext();
 const TOTAL_SECONDS = 12 * 60;
 const STORAGE_KEY = 'breach_timer_start';
 const STOPPED_KEY = 'breach_timer_stopped';
+const URGENCY_SEEN_KEY = 'breach_urgency_seen';
 
 function getRemaining() {
   const stored = localStorage.getItem(STORAGE_KEY);
@@ -52,6 +53,7 @@ export function TimerProvider({ children }) {
   const reset = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(STOPPED_KEY);
+    localStorage.removeItem(URGENCY_SEEN_KEY);
     localStorage.removeItem('breach_portal_unlocked');
     clearInterval(intervalRef.current);
     setRemaining(TOTAL_SECONDS);

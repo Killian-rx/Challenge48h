@@ -12,6 +12,8 @@ import { useTimer } from './context/TimerContext';
 import GlowCard from './components/GlowCard';
 import PageTransition from './components/PageTransition';
 
+const URGENCY_SEEN_KEY = 'breach_urgency_seen';
+
 function ExpiredOverlay() {
   const { expired, stopped } = useTimer();
   const [visible, setVisible] = useState(false);
@@ -38,12 +40,7 @@ function ExpiredOverlay() {
           <div className="animate-pulse-glow mb-5">
             <Skull className="w-20 h-20 text-cyber-red mx-auto" />
           </div>
-
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyber-red/50 bg-cyber-red/10 mb-4">
-            <AlertTriangle className="w-4 h-4 text-cyber-red" />
-            <span className="font-mono text-xs text-cyber-red tracking-wider animate-pulse">ALERTE CRITIQUE</span>
-          </div>
-
+          
           <h2 className="font-mono text-3xl sm:text-4xl font-black text-cyber-red mb-3" style={{ textShadow: '0 0 40px rgba(255,50,50,0.6)' }}>
             TEMPS ÉCOULÉ
           </h2>
@@ -80,12 +77,13 @@ function ExpiredOverlay() {
 function UrgencyOverlay() {
   const { remaining, running, stopped } = useTimer();
   const [visible, setVisible] = useState(false);
-  const [triggered, setTriggered] = useState(false);
+  const [triggered, setTriggered] = useState(() => localStorage.getItem(URGENCY_SEEN_KEY) === '1');
   const [flash, setFlash] = useState(false);
 
   useEffect(() => {
     if (running && !stopped && !triggered && remaining <= 5 * 60 && remaining > 0) {
       setTriggered(true);
+      localStorage.setItem(URGENCY_SEEN_KEY, '1');
       setVisible(true);
       const flashInterval = setInterval(() => setFlash((p) => !p), 200);
       setTimeout(() => clearInterval(flashInterval), 3000);
