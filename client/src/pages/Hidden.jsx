@@ -16,7 +16,7 @@ const FILESYSTEM = {
   },
   '/home/agent/todo.tmp': {
     type: 'file',
-    content: 'TODO\n- Vérifier endpoint /admin\n- Tester token ALPHA-ROOT-9\n- Purger les faux logs avant audit',
+    content: 'TODO\n- Vérifier nœud DMZ-07\n- Tester token ALPHA-ROOT-9\n- Purger les faux logs avant audit',
   },
   '/home/agent/logs': {
     type: 'dir',
@@ -24,7 +24,7 @@ const FILESYSTEM = {
   },
   '/home/agent/logs/access.log': {
     type: 'file',
-    content: '[03:47:12] GET /admin — 403 Forbidden\n[03:47:14] POST /login — 401 Unauthorized\n[03:47:15] GET /api/users — 200 OK\n[03:47:18] GET /hidden — 301 Redirect\n[03:47:22] GET /dashboard — 403 Forbidden\n[03:47:25] GET /backup.sql — 404 Not Found',
+    content: '[03:47:12] GET /gateway — 403 Forbidden\n[03:47:14] POST /login — 401 Unauthorized\n[03:47:15] GET /api/users — 200 OK\n[03:47:18] GET /hidden — 301 Redirect\n[03:47:22] GET /dashboard — 403 Forbidden\n[03:47:25] GET /backup.sql — 404 Not Found',
   },
   '/home/agent/logs/error.log': {
     type: 'file',
@@ -32,7 +32,7 @@ const FILESYSTEM = {
   },
   '/home/agent/logs/auth_debug.log': {
     type: 'file',
-    content: '[DEBUG] legacy_token=BREACH-ADMIN-LEGACY\n[DEBUG] backup_code=OMEGA-7\n[INFO] old format deprecated since build 2.7.1',
+    content: '[DEBUG] legacy_token=BREACH-LEGACY\n[DEBUG] backup_code=OMEGA-7\n[INFO] old format deprecated since build 2.7.1',
   },
   '/home/agent/evidence': {
     type: 'dir',

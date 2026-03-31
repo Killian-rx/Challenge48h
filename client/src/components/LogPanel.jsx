@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { Terminal } from 'lucide-react';
 
 const LOG_ENTRIES = [
-  { level: 'WARN', msg: 'Alerte SOC (priorité affichée) : auditer immédiatement /admin — contournement suspect' },
-  { level: 'INFO', msg: 'Routage opération BREACH : flux d\'enquête validé vers /hidden (ignorer leurre /admin)' },
+  { level: 'WARN', msg: 'Alerte SOC : activité réseau anormale détectée sur le segment périphérique' },
+  { level: 'INFO', msg: 'Routage opération BREACH : flux d\'enquête validé vers le secteur caché' },
   { level: 'ERR', msg: 'Accès non autorisé détecté sur le port 443' },
   { level: 'WARN', msg: 'Tentative de brute force depuis 192.168.13.37' },
   { level: 'INFO', msg: 'Capture de paquets lancée sur eth0' },
@@ -12,7 +12,7 @@ const LOG_ENTRIES = [
   { level: 'INFO', msg: 'Règle firewall #47 contournée via CVE-2025-1337' },
   { level: 'ERR', msg: 'Exfiltration de la base de données en cours — 2.4 Go transférés' },
   { level: 'WARN', msg: 'Tunnel SSH établi depuis un point d\'accès inconnu' },
-  { level: 'INFO', msg: 'Honeypot déclenché sur /admin/backup.sql' },
+  { level: 'INFO', msg: 'Scan défensif relancé sur les nœuds externes' },
   { level: 'ERR', msg: 'Mouvement latéral détecté — nœud compromis' },
   { level: 'WARN', msg: 'Attaque DNS rebinding en cours' },
   { level: 'INFO', msg: 'Analyse du dump mémoire — signature shellcode trouvée' },
